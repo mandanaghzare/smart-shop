@@ -1,3 +1,4 @@
+import AddToCartButton from "@/components/AddToCartButton";
 import { products } from "@/data/products"
 import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
@@ -72,19 +73,8 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                 </div>
 
                 <div className="mt-6 flex gap-3">
-                    <button
-                        type="button"
-                        className="cursor-pointer rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
-                    >
-                        Add to Cart
-                    </button>
 
-                    <button
-                        type="button"
-                        className="cursor-pointer rounded-lg border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-50"
-                    >
-                        Add to Wishlist
-                    </button>
+                    <AddToCartButton product={product} />
                 </div>
             </div>
         </div>
