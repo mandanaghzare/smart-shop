@@ -1,10 +1,18 @@
 "use client"
 
-import { useCartStore } from "@/store/cartStore"
+import { CartStore, useCartStore } from "@/store/cartStore"
+
+type EditQuantityProps = {
+  cartStore: CartStore
+}
 
 
-const CartPage = () => {
+const CartPage = ({cartStore}: EditQuantityProps) => {
     const cartItems = useCartStore((state) => state.cartItems)
+    const increaseQuantity= useCartStore((state) => state.increaseQuantity)
+    const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
+    const removeFromCart = useCartStore((state) => state.removeFromCart)
+    const subTotal = cartItems.reduce()
     return (
   <div className="min-h-screen bg-gray-50 px-8 py-12">
     <div className="mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
@@ -23,11 +31,13 @@ const CartPage = () => {
                 <h2 className="text-lg font-semibold text-gray-900">
                   {item.title}
                 </h2>
+                <button onClick={() => increaseQuantity(item.id)}> + </button>
                 <p className="text-sm text-gray-500">
                   Quantity: {item.quantity}
                 </p>
+                <button onClick={() => decreaseQuantity(item.id)}> - </button>
               </div>
-
+              <button onClick={() => removeFromCart(item.id)}>🗑</button>
               <p className="text-lg font-bold text-gray-900">
                 ${item.price}
               </p>
@@ -35,6 +45,9 @@ const CartPage = () => {
           ))}
         </div>
       )}
+      <div className="subtotal">
+        <p></p>
+      </div>
     </div>
   </div>
 );
