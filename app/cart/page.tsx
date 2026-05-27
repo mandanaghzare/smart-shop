@@ -12,7 +12,10 @@ const CartPage = ({cartStore}: EditQuantityProps) => {
     const increaseQuantity= useCartStore((state) => state.increaseQuantity)
     const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
     const removeFromCart = useCartStore((state) => state.removeFromCart)
-    const subTotal = cartItems.reduce()
+    const subTotal = cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    )
     return (
   <div className="min-h-screen bg-gray-50 px-8 py-12">
     <div className="mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
@@ -45,8 +48,12 @@ const CartPage = ({cartStore}: EditQuantityProps) => {
           ))}
         </div>
       )}
-      <div className="subtotal">
-        <p></p>
+      <div className="mt-6 flex justify-between border-t pt-4 text-xl font-bold">
+        <span>Subtotal</span>
+        <span>${subTotal}</span>
+      </div>
+      <div className="checkout">
+        <button></button>
       </div>
     </div>
   </div>
