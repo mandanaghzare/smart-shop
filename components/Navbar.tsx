@@ -1,11 +1,18 @@
 "use client"
 import { useAuthStore } from "@/store/authStore";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 
 const Navbar = () => {
     const user = useAuthStore((state) => state.user)
     const logout = useAuthStore((state) => state.logout)
+    const router = useRouter()
+    const handleLogout = () => {
+        logout()
+        router.push("/")
+    }
     return(
         <nav className="border-b border-gray-200 bg-white px-8 py-4 shadow-sm">
             <div className="mx-auto flex max-w-6xl items-center justify-between">
@@ -30,7 +37,7 @@ const Navbar = () => {
                                 </Link>
 
                                 <button
-                                onClick={logout}
+                                onClick={handleLogout}
                                 className="transition cursor-pointer hover:text-gray-950"
                                 >
                                 Logout
