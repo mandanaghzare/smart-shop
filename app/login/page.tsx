@@ -1,4 +1,5 @@
 "use client"
+import { useAuthStore } from "@/store/authStore";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -10,6 +11,7 @@ const LoginPage = () => {
     }
     const [loginForm, setLoginForm] = useState(initialLoginState)
     const [message, setMessage] = useState("")
+    const login = useAuthStore((state) => state.login)
 
     const fakeUsers = [
       {
@@ -46,6 +48,8 @@ const LoginPage = () => {
         return
       }
 
+      setMessage("Login successful")
+      login(loginForm.email)
       setMessage("Login successful")
     }
 

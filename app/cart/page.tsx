@@ -1,13 +1,10 @@
 "use client"
 
-import { CartStore, useCartStore } from "@/store/cartStore"
-
-type EditQuantityProps = {
-  cartStore: CartStore
-}
+import { useCartStore } from "@/store/cartStore"
 
 
-const CartPage = ({cartStore}: EditQuantityProps) => {
+
+const CartPage = () => {
     const cartItems = useCartStore((state) => state.cartItems)
     const increaseQuantity= useCartStore((state) => state.increaseQuantity)
     const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
