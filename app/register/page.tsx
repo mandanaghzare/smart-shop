@@ -15,6 +15,14 @@ const RegisterPage = () => {
   const [formValues, setFormValues] = useState(initialRegisterState)
   const [message, setMessage] = useState("")
 
+  
+  const fakeUsers = [
+    {
+      email: "test@gmail.com",
+      password: "12345678",
+    },
+  ]
+
   const handleSubmit = () => {
     if (!formValues.fullName || !formValues.email || !formValues.password || !formValues.confirmPassword) {
       setMessage("Fill the field")
@@ -22,6 +30,10 @@ const RegisterPage = () => {
     }
     if (formValues.password !== formValues.confirmPassword) {
       setMessage("Password is not correct")
+      return
+    }
+    if(fakeUsers.find((user) => user.email === formValues.email)){
+      setMessage("An account with this email already exists")
       return
     }
     setMessage("Success")
