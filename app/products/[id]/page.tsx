@@ -1,4 +1,5 @@
 import AddToCartButton from "@/components/AddToCartButton";
+import AddToWishlistBotton from "@/components/AddToWishlistButton";
 import { products } from "@/data/products"
 import { useCartStore } from "@/store/cartStore";
 import Link from "next/link";
@@ -73,8 +74,8 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                 </div>
 
                 <div className="mt-6 flex gap-3">
-
                     <AddToCartButton product={product} />
+                    <AddToWishlistBotton product={product} />
                 </div>
             </div>
         </div>
