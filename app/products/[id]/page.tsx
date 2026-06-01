@@ -2,6 +2,7 @@ import AddToCartButton from "@/components/AddToCartButton";
 import AddToWishlistBotton from "@/components/AddToWishlistButton";
 import { products } from "@/data/products"
 import { useCartStore } from "@/store/cartStore";
+import Image from "next/image";
 import Link from "next/link";
 
 type ProductDetailsPageProps = {
@@ -32,11 +33,30 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                 <p className="mb-3 text-sm uppercase tracking-wide text-gray-500">
                 {product.category}
                 </p>
+                <div className="flex justify-between items-center gap-8">
+                    <div>
+                        <h1 className="text-4xl font-bold text-gray-900">
+                        {product.title}
+                        </h1>
+                    </div>
+                    <div className="image">
+                        <Image
+                            src={product.image}
+                            alt={product.title}
+                            width={220}
+                            height={220}
+                            className="
+                                rounded-2xl
+                                object-cover
+                                shadow-lg
+                                transition-transform
+                                duration-300
+                                hover:scale-105
+                                "
+                        />
+                    </div>
+                </div>
 
-                <h1 className="text-4xl font-bold text-gray-900">
-                {product.title}
-                </h1>
-                
                 <p
                 className={
                     product.stock > 0

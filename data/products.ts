@@ -11,7 +11,7 @@ export const products: Product[] = [
     brand: "Sony",
     rating: 4.5,
     stock: 12,
-    image: "/products/headphones.png",
+    image: "https://plus.unsplash.com/premium_photo-1677838847804-4054143fb91a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 10,
   },
   {
@@ -23,7 +23,7 @@ export const products: Product[] = [
     brand: "Samsung",
     rating: 4.3,
     stock: 8,
-    image: "/products/smart-watch.png",
+    image: "https://images.unsplash.com/photo-1691439378545-dd6b35ff2f7b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 15,
   },
   {
@@ -35,7 +35,7 @@ export const products: Product[] = [
     brand: "Nike",
     rating: 4.6,
     stock: 20,
-    image: "/products/running-shoes.png",
+    image: "https://images.unsplash.com/photo-1605408499391-6368c628ef42?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 5,
   },
   {
@@ -47,7 +47,7 @@ export const products: Product[] = [
     brand: "Adidas",
     rating: 4.2,
     stock: 15,
-    image: "/products/hoodie.png",
+    image: "https://images.unsplash.com/photo-1614231125961-38323d6c485b?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 0,
   },
   {
@@ -59,7 +59,7 @@ export const products: Product[] = [
     brand: "Ikea",
     rating: 4.1,
     stock: 25,
-    image: "/products/desk-lamp.png",
+    image: "https://images.unsplash.com/photo-1708167003237-a4230039e3af?q=80&w=627&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 0,
   },
   {
@@ -71,7 +71,7 @@ export const products: Product[] = [
     brand: "Philips",
     rating: 4.4,
     stock: 10,
-    image: "/products/coffee-maker.png",
+    image: "https://images.unsplash.com/photo-1539021897569-06e9fa3c6bb9?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 12,
   },
   {
@@ -83,7 +83,7 @@ export const products: Product[] = [
     brand: "Reebok",
     rating: 4.0,
     stock: 30,
-    image: "/products/yoga-mat.png",
+    image: "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 0,
   },
   {
@@ -95,7 +95,7 @@ export const products: Product[] = [
     brand: "Wilson",
     rating: 4.5,
     stock: 18,
-    image: "/products/basketball.png",
+    image: "https://images.unsplash.com/photo-1640576905072-8181534f83ae?q=80&w=715&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     discount: 8,
   },
 ];

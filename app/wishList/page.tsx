@@ -1,5 +1,6 @@
 "use client"
 import { useWishlist } from "@/store/wishlistStore"
+import Image from "next/image"
 
 
 const WishistPage = () => {
@@ -31,12 +32,27 @@ const WishistPage = () => {
                     className="flex items-center justify-between rounded-xl border border-gray-200 p-4"
                 >
                     <div>
-                    <h2 className="text-lg font-semibold text-gray-900">
-                        {item.title}
-                    </h2>
-                    <p className="mt-1 text-gray-600">${item.price}</p>
+                        <h2 className="text-lg font-semibold text-gray-900">
+                            {item.title}
+                        </h2>
+                        <p className="mt-1 text-gray-600">${item.price}</p>
                     </div>
-
+                    <div className="image">
+                        <Image
+                            src={item.image}
+                            alt={item.title}
+                            width={60}
+                            height={60}
+                            className="
+                                rounded-2xl
+                                object-cover
+                                shadow-lg
+                                transition-transform
+                                duration-300
+                                hover:scale-105
+                                "
+                        />
+                    </div>
                     <button
                     onClick={() => removeFromWishlist(item.id)}
                     className="rounded-lg bg-red-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-600"
