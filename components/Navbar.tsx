@@ -1,5 +1,6 @@
 "use client"
 import { useAuthStore } from "@/store/authStore";
+import { useCartStore } from "@/store/cartStore";
 import { useWishlist } from "@/store/wishlistStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ const Navbar = () => {
     const user = useAuthStore((state) => state.user)
     const logout = useAuthStore((state) => state.logout)
     const wishlistItems = useWishlist((state) => state.wishlistItems)
+    const cartItems = useCartStore((state) => state.cartItems)
     const router = useRouter()
     const handleLogout = () => {
         logout()
@@ -29,7 +31,7 @@ const Navbar = () => {
                         <Link href="/products" className="transition hover:text-gray-950">Products</Link>
                     </li>
                     <li>
-                        <Link href="/cart" className="transition hover:text-gray-950">Cart</Link>
+                        <Link href="/cart" className="transition hover:text-gray-950">Cart ({cartItems.length})</Link>
                     </li>
                     <li>
                         <Link href="/wishlist" className="transition hover:text-gray-950">Wish List ({wishlistItems.length})</Link>

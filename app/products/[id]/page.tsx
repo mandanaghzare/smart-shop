@@ -1,7 +1,6 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import AddToWishlistBotton from "@/components/AddToWishlistButton";
 import { products } from "@/data/products"
-import { useCartStore } from "@/store/cartStore";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,8 +9,6 @@ type ProductDetailsPageProps = {
         id: string
     }>;
 };
-
-const addToCart = useCartStore
 
 const ProductIds = async ({params}: ProductDetailsPageProps) => {
     const { id } = await params;
@@ -39,7 +36,8 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                         {product.title}
                         </h1>
                     </div>
-                    <div className="image">
+                    <div className="flex items-end">
+                        <AddToWishlistBotton product={product} />
                         <Image
                             src={product.image}
                             alt={product.title}
@@ -52,6 +50,7 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                                 transition-transform
                                 duration-300
                                 hover:scale-105
+                                ml-3
                                 "
                         />
                     </div>
@@ -95,7 +94,6 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
 
                 <div className="mt-6 flex gap-3">
                     <AddToCartButton product={product} />
-                    <AddToWishlistBotton product={product} />
                 </div>
             </div>
         </div>
