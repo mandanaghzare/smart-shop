@@ -1,11 +1,12 @@
 "use client"
 import { useAuthStore } from "@/store/authStore"
+import LoginRequired from "../login/LoginRequired"
 
 const ProfilePage = () => {
     const user = useAuthStore((state) => state.user)
 
     if(!user) {
-        return <div>Please login to view your profile</div>
+        return <LoginRequired />
     }
     return(
         <div>

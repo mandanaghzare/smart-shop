@@ -1,11 +1,17 @@
 "use client"
+import { useAuthStore } from "@/store/authStore"
 import { useWishlist } from "@/store/wishlistStore"
 import Image from "next/image"
+import LoginRequired from "../login/LoginRequired"
 
 
 const WishistPage = () => {
+    const user = useAuthStore((state) => state.user)
     const wishlistItems = useWishlist((state) => state.wishlistItems)
     const removeFromWishlist = useWishlist((state) => state.removeFromWishlist)
+    if (!user) {
+        return <LoginRequired />
+    }
     if (wishlistItems.length === 0) {
         return (
             <div className="min-h-screen bg-gray-50 px-6 py-12">

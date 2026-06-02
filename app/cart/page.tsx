@@ -4,11 +4,14 @@ import { useCartStore } from "@/store/cartStore"
 import Image from "next/image"
 import Link from "next/link"
 import { FaTrash } from "react-icons/fa"
+import LoginRequired from "../login/LoginRequired"
+import { useAuthStore } from "@/store/authStore"
 
 
 
 const CartPage = () => {
     const cartItems = useCartStore((state) => state.cartItems)
+    const user = useAuthStore((state) => state.user)
     const increaseQuantity= useCartStore((state) => state.increaseQuantity)
     const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
     const removeFromCart = useCartStore((state) => state.removeFromCart)
@@ -16,6 +19,9 @@ const CartPage = () => {
       (total, item) => total + item.price * item.quantity,
       0
     )
+    if(!user) {
+      return <LoginRequired />
+    }
     return (
       <div className="min-h-screen bg-gray-50 px-8 py-12">
         <div className="mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">

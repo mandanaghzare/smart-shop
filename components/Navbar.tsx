@@ -30,12 +30,12 @@ const Navbar = () => {
                     <li>
                         <Link href="/products" className="transition hover:text-gray-950">Products</Link>
                     </li>
-                    <li>
+                    {user && (<li>
                         <Link href="/cart" className="transition hover:text-gray-950">Cart ({cartItems.length})</Link>
-                    </li>
-                    <li>
+                    </li>)}
+                    {user && (<li>
                         <Link href="/wishlist" className="transition hover:text-gray-950">Wish List ({wishlistItems.length})</Link>
-                    </li>
+                    </li>)}
                     <li>
                         {user ? (
                             <div className="flex items-center gap-6">
