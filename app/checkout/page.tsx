@@ -1,5 +1,7 @@
 "use client"
 import { useCartStore } from "@/store/cartStore"
+import { useOrderStor } from "@/store/orderStore"
+import { CartItem } from "@/store/cartStore";
 import { useState } from "react"
 
 
@@ -10,12 +12,30 @@ const CheckoutPage = () => {
     const shipping = subTotal > 200 ? 0 : 20
     const total = subTotal + shipping
     const [isOrderPlaced, setIsOrderPlaced] = useState(false)
+    const addOrder = useOrderStor((state) => state.addOrder)
 
     const handlePlaceOrder = () => {
-        if(cartItems.length === 0) return;
-        setIsOrderPlaced(true);
+        const latestCart = JSON.parse(localStorage.getItem("cart-storage") || "{}");
+        const latestItems: CartItem[] = latestCart?.state?.cartItems || [];
+
+        if (latestItems.length === 0) {
+            alert("Your cart is already empty.");
+            clearCart();
+            return;
+        }
+
+        const latestSubtotal = latestItems.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+        );
+
+        const latestShipping = latestSubtotal > 200 ? 0 : 20;
+        const latestTotal = latestSubtotal + latestShipping;
+
+        addOrder(latestItems, latestTotal);
         clearCart();
-    }
+        setIsOrderPlaced(true);
+    };
 
     return (
         <div className="min-h-screen bg-gray-50 px-6 py-12">

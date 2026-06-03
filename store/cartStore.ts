@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Product } from "@/types/product";
 
-type CartItem = Product & {
+export type CartItem = Product & {
   quantity: number;
 };
 
@@ -14,6 +14,7 @@ type CartStore = {
   decreaseQuantity: (id: string) => void;
   clearCart: () => void;
 };
+
 
 export const useCartStore = create<CartStore>()(
   persist(

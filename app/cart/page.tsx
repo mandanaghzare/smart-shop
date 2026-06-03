@@ -12,6 +12,7 @@ import { useAuthStore } from "@/store/authStore"
 const CartPage = () => {
     const cartItems = useCartStore((state) => state.cartItems)
     const user = useAuthStore((state) => state.user)
+    const hasHydrated = useAuthStore((state) => state.hasHydrated);
     const increaseQuantity= useCartStore((state) => state.increaseQuantity)
     const decreaseQuantity = useCartStore((state) => state.decreaseQuantity)
     const removeFromCart = useCartStore((state) => state.removeFromCart)
@@ -19,6 +20,9 @@ const CartPage = () => {
       (total, item) => total + item.price * item.quantity,
       0
     )
+    if (!hasHydrated) {
+      return null;
+    }
     if(!user) {
       return <LoginRequired />
     }
@@ -80,7 +84,7 @@ const CartPage = () => {
                       +
                     </button>
 
-                    <span className="font-medium min-w-[60px] text-center">
+                    <span className="font-medium min-w-15 text-center">
                       {item.quantity}
                     </span>
 
@@ -110,7 +114,7 @@ const CartPage = () => {
                     <FaTrash />
                   </button>
 
-                  <p className="min-w-[90px] text-right text-lg font-bold text-gray-900">
+                  <p className="min-w-22.5 text-right text-lg font-bold text-gray-900">
                     ${item.price * item.quantity}
                   </p>
                 </div>

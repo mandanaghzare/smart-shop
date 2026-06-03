@@ -7,8 +7,14 @@ import LoginRequired from "../login/LoginRequired"
 
 const WishistPage = () => {
     const user = useAuthStore((state) => state.user)
+    const hasHydrated = useAuthStore((state) => state.hasHydrated);
     const wishlistItems = useWishlist((state) => state.wishlistItems)
     const removeFromWishlist = useWishlist((state) => state.removeFromWishlist)
+
+    if (!hasHydrated) {
+        return null;
+    }
+    
     if (!user) {
         return <LoginRequired />
     }
