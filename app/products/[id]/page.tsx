@@ -1,6 +1,7 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import AddToWishlistBotton from "@/components/AddToWishlistButton";
 import ProductsCard from "@/components/ProductCard";
+import RecentlyViewed from "@/components/RecentlyViewed";
 import { products } from "@/data/products"
 import Image from "next/image";
 import Link from "next/link";
@@ -19,11 +20,22 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
             item.category === product?.category &&
             item.id !== product.id
     )
-    console.log("RELATED PRODUCTS:");
-console.log(relatedProducts);
     if(!product) {
         return <div>Product Not Found</div>
     }
+    const fullStars = Math.floor(product.rating);
+    const discountedPrice = product?.price - (product?.price * product?.discount) / 100
+    const stockPercent = Math.min((product.stock / 30) * 100, 100);
+
+    const stockColor =
+        product.stock === 0
+            ? "bg-red-500"
+            : product.stock <= 5
+            ? "bg-red-500"
+            : product.stock <= 15
+            ? "bg-yellow-500"
+            : "bg-green-500";
+            
     return(
         <div className="min-h-screen bg-gray-50 px-8 py-12">
             <div className="mx-auto max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
@@ -77,22 +89,76 @@ console.log(relatedProducts);
                 {product.description}
                 </p>
 
-                <p className="mt-6 text-3xl font-bold text-gray-900">
-                ${product.price}
-                </p>
+                <div className="mt-6 flex items-center gap-3">
+                    <span className="text-3xl font-bold text-gray-900">
+                        ${discountedPrice.toFixed(0)}
+                    </span>
+
+                    {product.discount > 0 && (
+                        <>
+                        <span className="text-lg text-gray-400 line-through">
+                            ${product.price}
+                        </span>
+
+                        <span className="rounded-full bg-red-100 px-3 py-1 text-sm font-semibold text-red-600">
+                            Save {product.discount}%
+                        </span>
+                        </>
+                    )}
+                </div>
 
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                 <p className="rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
                     <span className="font-semibold">Brand:</span> {product.brand}
                 </p>
 
-                <p className="rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
-                    <span className="font-semibold">Rating:</span> {product.rating}
-                </p>
+                <div className="flex items-center gap-2">
+                    <div className="flex">
+                        {Array.from({ length: 5 }).map((_, index) => (
+                        <span
+                            key={index}
+                            className={
+                            index < fullStars
+                                ? "text-yellow-400"
+                                : "text-gray-300"
+                            }
+                        >
+                            ★
+                        </span>
+                        ))}
+                    </div>
 
-                <p className="rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
-                    <span className="font-semibold">Stock:</span> {product.stock}
-                </p>
+                    <span className="text-sm font-medium text-gray-600">
+                        {product.rating}
+                    </span>
+                </div>
+
+                <div className="rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
+                    <div className="mb-2 flex items-center justify-between">
+                        <span className="font-semibold text-gray-900">Stock</span>
+
+                        <span
+                        className={
+                            product.stock === 0
+                            ? "font-medium text-red-600"
+                            : product.stock <= 5
+                            ? "font-medium text-red-600"
+                            : product.stock <= 15
+                            ? "font-medium text-yellow-600"
+                            : "font-medium text-green-600"
+                        }
+                        >
+                        {product.stock > 0 ? `${product.stock} available` : "Out of stock"}
+                        </span>
+                    </div>
+
+                    <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+                        <div
+                        className={`h-full rounded-full ${stockColor}`}
+                        style={{ width: `${stockPercent}%` }}
+                        />
+                    </div>
+                </div>
 
                 <p className="rounded-lg bg-gray-50 p-4 text-sm text-gray-700">
                     <span className="font-semibold">Discount:</span> {product.discount}%
@@ -119,14 +185,50 @@ console.log(relatedProducts);
                         </p>
                         </div>
 
-                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                        {relatedProducts.slice(0, 3).map((product) => (
-                            <ProductsCard key={product.id} product={product} />
-                        ))}
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                            {relatedProducts.slice(0, 4).map((product) => (
+                                <Link
+                                    key={product.id}
+                                    href={`/products/${product.id}`}
+                                    className="group rounded-2xl border border-gray-200 bg-gray-50 p-4 transition hover:-translate-y-1 hover:bg-white hover:shadow-md"
+                                    >
+                                    <div className="relative mb-4 h-40 overflow-hidden rounded-xl bg-white">
+                                        <Image
+                                        src={product.image}
+                                        alt={product.title}
+                                        fill
+                                        className="object-cover transition duration-300 group-hover:scale-105"
+                                        />
+                                    </div>
+
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div>
+                                        <h3 className="font-semibold text-gray-900">
+                                            {product.title}
+                                        </h3>
+
+                                        <p className="mt-1 text-sm text-gray-500">
+                                            {product.brand}
+                                        </p>
+                                        </div>
+
+                                        <p className="font-bold text-gray-900">
+                                        ${product.price}
+                                        </p>
+                                    </div>
+
+                                    {product.discount > 0 && (
+                                        <span className="mt-3 inline-flex rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-600">
+                                        {product.discount}% OFF
+                                        </span>
+                                    )}
+                                </Link>
+                            ))}
                         </div>
                     </section>
                 )}
             </section>
+            <RecentlyViewed currentProductId={product.id}  />
         </div>
     )
 }
