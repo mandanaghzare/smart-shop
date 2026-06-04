@@ -48,10 +48,6 @@ const ProductsPage = () => {
         "all",
         ...Array.from(new Set(products.map((product) => product.category))),
     ]
-    console.log(products.length)
-    console.log(filteredProducts.length)
-    console.log(sortedProducts.length)
-    console.log(currentProducts.length)
     return (
         <div className="min-h-screen bg-gray-50 px-8 py-10">
             <div className="mx-auto max-w-7xl">

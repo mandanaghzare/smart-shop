@@ -1,5 +1,6 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import AddToWishlistBotton from "@/components/AddToWishlistButton";
+import ProductsCard from "@/components/ProductCard";
 import { products } from "@/data/products"
 import Image from "next/image";
 import Link from "next/link";
@@ -13,7 +14,13 @@ type ProductDetailsPageProps = {
 const ProductIds = async ({params}: ProductDetailsPageProps) => {
     const { id } = await params;
     const product = products.find((product) => product.id === id);
-
+    const relatedProducts = products.filter(
+        (item) => 
+            item.category === product?.category &&
+            item.id !== product.id
+    )
+    console.log("RELATED PRODUCTS:");
+console.log(relatedProducts);
     if(!product) {
         return <div>Product Not Found</div>
     }
@@ -96,6 +103,30 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                     <AddToCartButton product={product} />
                 </div>
             </div>
+            <section className="mt-12">
+                <h2 className="mb-6 text-2xl font-bold">
+                    Related Products
+                </h2>
+
+                {relatedProducts.length > 0 && (
+                    <section className="mt-12 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                        <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900">
+                            You may also like
+                        </h2>
+                        <p className="mt-1 text-sm text-gray-500">
+                            Similar products from the same category.
+                        </p>
+                        </div>
+
+                        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                        {relatedProducts.slice(0, 3).map((product) => (
+                            <ProductsCard key={product.id} product={product} />
+                        ))}
+                        </div>
+                    </section>
+                )}
+            </section>
         </div>
     )
 }
