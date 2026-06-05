@@ -12,6 +12,8 @@ type RecentlyViewedProps = {
 
 const RecentlyViewed = ({ currentProductId }: RecentlyViewedProps) => {
     const [recentProducts, setRecentProducts] = useState<Product[]>([])
+    // const discountedPrice = product?.price - ( product?.price * product?.discount) / 100
+    // const stockPercent = Math.min((product.stock / 30) * 100, 100);
 
     useEffect(() => {
         const storedProducts = JSON.parse(
