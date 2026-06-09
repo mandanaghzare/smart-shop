@@ -12,8 +12,6 @@ type RecentlyViewedProps = {
 
 const RecentlyViewed = ({ currentProductId }: RecentlyViewedProps) => {
     const [recentProducts, setRecentProducts] = useState<Product[]>([])
-    // const discountedPrice = product?.price - ( product?.price * product?.discount) / 100
-    // const stockPercent = Math.min((product.stock / 30) * 100, 100);
 
     useEffect(() => {
         const storedProducts = JSON.parse(
@@ -62,7 +60,7 @@ const RecentlyViewed = ({ currentProductId }: RecentlyViewedProps) => {
                     />
                 </div>
 
-                <h3 className="font-semibold text-gray-900">
+                <h3 className="truncate text-lg font-semibold text-gray-900">
                     {product.title}
                 </h3>
 

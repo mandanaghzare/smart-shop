@@ -2,7 +2,7 @@ import AddToCartButton from "@/components/AddToCartButton";
 import AddToWishlistBotton from "@/components/AddToWishlistButton";
 import ProductsCard from "@/components/ProductCard";
 import RecentlyViewed from "@/components/RecentlyViewed";
-import { products } from "@/data/products"
+import { products } from "@/data/products";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -49,28 +49,31 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                 <p className="mb-3 text-sm uppercase tracking-wide text-gray-500">
                 {product.category}
                 </p>
-                <div className="flex justify-between items-center gap-8">
-                    <div>
-                        <h1 className="text-4xl font-bold text-gray-900">
-                        {product.title}
+                <div className="flex items-center justify-between gap-10">
+                    <div className="flex flex-1 items-center">
+                        <h1 className="max-w-2xl text-4xl font-bold text-gray-900">
+                            {product.title}
                         </h1>
                     </div>
-                    <div className="flex items-end">
+
+                    <div className="flex shrink-0 items-end">
                         <AddToWishlistBotton product={product} />
+
                         <Image
-                            src={product.image}
-                            alt={product.title}
-                            width={220}
-                            height={220}
-                            className="
-                                rounded-2xl
-                                object-cover
-                                shadow-lg
-                                transition-transform
-                                duration-300
-                                hover:scale-105
-                                ml-3
-                                "
+                        src={product.image}
+                        alt={product.title}
+                        width={220}
+                        height={220}
+                        className="
+                            ml-3
+                            rounded-2xl
+                            bg-white
+                            object-contain
+                            shadow-lg
+                            transition-transform
+                            duration-300
+                            hover:scale-105
+                        "
                         />
                     </div>
                 </div>
@@ -169,13 +172,62 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                     <AddToCartButton product={product} />
                 </div>
             </div>
-            <section className="mt-12">
-                <h2 className="mb-6 text-2xl font-bold">
-                    Related Products
-                </h2>
+            <div className="mx-auto mt-12 max-w-7xl space-y-10">
+                {product.reviews.length > 0 && (
+                    <section className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
+                    <div className="mb-6">
+                        <h2 className="text-2xl font-bold text-gray-900">
+                        Customer Reviews
+                        </h2>
+                        <p className="mt-1 text-sm text-gray-500">
+                        What customers are saying about this product.
+                        </p>
+                    </div>
+
+                    <div className="space-y-4">
+                        {product.reviews.map((review, index) => (
+                        <div
+                            key={index}
+                            className="rounded-xl border border-gray-200 bg-gray-50 p-5"
+                        >
+                            <div className="mb-2 flex items-center justify-between gap-4">
+                            <div>
+                                <p className="font-semibold text-gray-900">
+                                {review.reviewerName}
+                                </p>
+
+                                <div className="mt-1 flex">
+                                {Array.from({ length: 5 }).map((_, starIndex) => (
+                                    <span
+                                    key={starIndex}
+                                    className={
+                                        starIndex < review.rating
+                                        ? "text-yellow-400"
+                                        : "text-gray-300"
+                                    }
+                                    >
+                                    ★
+                                    </span>
+                                ))}
+                                </div>
+                            </div>
+
+                            <span className="text-xs text-gray-400">
+                                {new Date(review.date).toLocaleDateString()}
+                            </span>
+                            </div>
+
+                            <p className="text-sm leading-6 text-gray-600">
+                            {review.comment}
+                            </p>
+                        </div>
+                        ))}
+                    </div>
+                    </section>
+                )}
 
                 {relatedProducts.length > 0 && (
-                    <section className="mt-12 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                    <section className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
                         <div className="mb-6">
                         <h2 className="text-2xl font-bold text-gray-900">
                             You may also like
@@ -186,49 +238,15 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                         </div>
 
                         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                            {relatedProducts.slice(0, 4).map((product) => (
-                                <Link
-                                    key={product.id}
-                                    href={`/products/${product.id}`}
-                                    className="group rounded-2xl border border-gray-200 bg-gray-50 p-4 transition hover:-translate-y-1 hover:bg-white hover:shadow-md"
-                                    >
-                                    <div className="relative mb-4 h-40 overflow-hidden rounded-xl bg-white">
-                                        <Image
-                                        src={product.image}
-                                        alt={product.title}
-                                        fill
-                                        className="object-cover transition duration-300 group-hover:scale-105"
-                                        />
-                                    </div>
-
-                                    <div className="flex items-start justify-between gap-3">
-                                        <div>
-                                        <h3 className="font-semibold text-gray-900">
-                                            {product.title}
-                                        </h3>
-
-                                        <p className="mt-1 text-sm text-gray-500">
-                                            {product.brand}
-                                        </p>
-                                        </div>
-
-                                        <p className="font-bold text-gray-900">
-                                        ${product.price}
-                                        </p>
-                                    </div>
-
-                                    {product.discount > 0 && (
-                                        <span className="mt-3 inline-flex rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-600">
-                                        {product.discount}% OFF
-                                        </span>
-                                    )}
-                                </Link>
-                            ))}
+                        {relatedProducts.slice(0, 4).map((product) => (
+                            <ProductsCard key={product.id} product={product} />
+                        ))}
                         </div>
                     </section>
                 )}
-            </section>
-            <RecentlyViewed currentProductId={product.id}  />
+
+                <RecentlyViewed currentProductId={product.id} />
+            </div>
         </div>
     )
 }

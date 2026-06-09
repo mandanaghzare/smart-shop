@@ -3,6 +3,8 @@ import { useAuthStore } from "@/store/authStore"
 import { useWishlist } from "@/store/wishlistStore"
 import Image from "next/image"
 import LoginRequired from "../login/LoginRequired"
+import Link from "next/link"
+import { products } from "@/data/products"
 
 
 const WishistPage = () => {
@@ -21,14 +23,14 @@ const WishistPage = () => {
     if (wishlistItems.length === 0) {
         return (
             <div className="min-h-screen bg-gray-50 px-6 py-12">
-            <div className="mx-auto max-w-xl rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-                <h1 className="text-2xl font-bold text-gray-900">
-                Your wishlist is empty
-                </h1>
-                <p className="mt-2 text-gray-500">
-                Add products to save them for later.
-                </p>
-            </div>
+                <div className="mx-auto max-w-xl rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+                    <h1 className="text-2xl font-bold text-gray-900">
+                    Your wishlist is empty
+                    </h1>
+                    <p className="mt-2 text-gray-500">
+                    Add products to save them for later.
+                    </p>
+                </div>
             </div>
         )
     }
@@ -39,7 +41,8 @@ const WishistPage = () => {
 
             <div className="space-y-4">
                 {wishlistItems.map((item) => (
-                <div
+                <Link
+                   href={`/products/${item.id}`}
                     key={item.id}
                     className="flex items-center justify-between rounded-xl border border-gray-200 p-4"
                 >
@@ -71,7 +74,7 @@ const WishistPage = () => {
                     >
                     Delete
                     </button>
-                </div>
+                </Link>
                 ))}
             </div>
             </div>

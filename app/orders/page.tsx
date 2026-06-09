@@ -67,7 +67,7 @@ const OrdersPage = () => {
                                     </div>
 
                                     <p className="font-bold text-gray-900">
-                                        ${item.price}
+                                        ${item.price.toFixed(2)}
                                     </p>
                                     </div>
                                 </Link>
@@ -87,7 +87,7 @@ const OrdersPage = () => {
 
                                 <div className="text-center">
                                 <p className="text-sm text-gray-500">Total</p>
-                                <p className="font-bold text-gray-900">${order.total}</p>
+                                <p className="font-bold text-gray-900">${order.total.toFixed(2)}</p>
                                 </div>
                             </div>
                             </div>

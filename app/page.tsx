@@ -19,6 +19,14 @@ export default function Home() {
     .sort((a, b) => b.discount - a.discount)
     .slice(0,4)
 
+  const newArrivals = [...products]
+  .sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() -
+      new Date(a.createdAt).getTime()
+  )
+  .slice(0, 4)
+
   return (
     <main className="min-h-screen bg-gray-50 px-6 py-16">
       <section className="mx-auto max-w-5xl rounded-3xl border border-gray-200 bg-white px-8 py-16 text-center shadow-sm">
@@ -116,7 +124,21 @@ export default function Home() {
             Shop Deals
           </Link>
         </div>
-      </section>له
+      </section>
+      <section className="mx-auto mt-12 max-w-6xl">
+        <h2 className="mb-6 text-2xl font-bold text-gray-900">
+          New Arrivals
+        </h2>
+
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {newArrivals.map((product) => (
+            <ProductsCard
+              key={product.id}
+              product={product}
+            />
+          ))}
+        </div>
+      </section>
     </main>
   );
 }

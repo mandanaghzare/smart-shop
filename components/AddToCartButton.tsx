@@ -5,15 +5,22 @@ import { Product } from "@/types/product"
 
 export type AddToCartButtonProps = {
     product: Product
+    variant?: "default" | "icon";
 }
 
-const AddToCartButton = ({product}: AddToCartButtonProps) => {
+const AddToCartButton = ({product, variant}: AddToCartButtonProps) => {
     const addToCart = useCartStore((state) => state.addToCart)
     return(
         <div>
-            <button onClick={() => addToCart(product)}
-                className="cursor-pointer rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700">
-                Add to Cart
+            <button
+            onClick={() => addToCart(product)}
+                className={
+                    variant === "icon"
+                    ? "rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
+                    : "rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700"
+                }
+                >
+                {variant === "icon" ? "+" : "Add to Cart"}
             </button>
         </div>
     )
