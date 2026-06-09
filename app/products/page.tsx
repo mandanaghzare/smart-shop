@@ -1,7 +1,9 @@
 "use client"
 import ProductsCard from "@/components/ProductCard"
+import ProductCardSkeleton from "@/components/ProductCardSkeleton"
 import { products } from "@/data/products"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+
 
 const ProductsPage = () => {
     const [searchItem, setSearchItem] = useState("");
@@ -11,6 +13,8 @@ const ProductsPage = () => {
     const productsPerPage = 8
     const lastProductIndex = currentPage * productsPerPage
     const firstProductIndex = lastProductIndex - productsPerPage
+    const [isLoading, setIsLoading] = useState(true);
+
     const filteredProducts = products.filter((product) => {
         const matchesSearch = product.title
             .toLowerCase()
@@ -48,111 +52,144 @@ const ProductsPage = () => {
         "all",
         ...Array.from(new Set(products.map((product) => product.category))),
     ]
+    useEffect(() => {
+    const timer = setTimeout(() => {
+        setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+    }, []);
     return (
-        <div className="min-h-screen bg-gray-50 px-8 py-10">
-            <div className="mx-auto max-w-7xl">
-                <div className="mb-10">
-                    <h1 className="text-4xl font-bold text-gray-900">
-                        Discover Products
-                    </h1>
+  <div className="min-h-screen bg-slate-100 px-8 py-10 transition-colors dark:bg-slate-950">
+    <div className="mx-auto max-w-7xl">
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">
+          Discover Products
+        </h1>
 
-                    <p className="mt-2 text-gray-500">
-                        Browse our collection and find your next favorite item.
-                    </p>
-                </div>
+        <p className="mt-2 text-slate-600 dark:text-slate-400">
+          Browse our collection and find your next favorite item.
+        </p>
+      </div>
 
-                <div className="mb-10 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="flex flex-col items-center gap-6">
-                        <input
-                            type="text"
-                            placeholder="Search products..."
-                            value={searchItem}
-                            onChange={(e) => {
-                                setSearchItem(e.target.value)
-                                setCurrentPage(1)
-                            }}
-                            className="
-                            w-full max-w-lg
-                            rounded-xl border border-gray-300
-                            bg-white px-4 py-3
-                            text-sm text-gray-900
-                            shadow-sm
-                            outline-none
-                            transition
-                            placeholder:text-gray-400
-                            focus:border-gray-900
-                            focus:ring-2
-                            focus:ring-gray-200
-                            "
-                        />
+      <div className="mb-10 rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex flex-col items-center gap-6">
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchItem}
+            onChange={(e) => {
+              setSearchItem(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="
+              w-full max-w-lg
+              rounded-xl border border-slate-300
+              bg-slate-100 px-4 py-3
+              text-sm text-slate-900
+              shadow-sm
+              outline-none
+              transition
+              placeholder:text-slate-400
+              focus:border-slate-700
+              focus:ring-2
+              focus:ring-slate-300
+              dark:border-slate-700
+              dark:bg-slate-800
+              dark:text-slate-100
+              dark:placeholder:text-slate-500
+              dark:focus:border-slate-500
+              dark:focus:ring-slate-700
+            "
+          />
 
-                        <div className="flex flex-wrap justify-center gap-3">
-                            {categories.map((category) => (
-                                <button
-                                    key={category}
-                                    onClick={() => {
-                                        setSelectedCategory(category)
-                                        setCurrentPage(1)
-                                    }}
-                                    className={`rounded-full px-4 py-2 text-sm font-medium transition ${selectedCategory === category
-                                            ? "bg-gray-900 text-white"
-                                            : "border border-gray-300 bg-white text-gray-600 hover:bg-gray-100"
-                                        }`}
-                                >
-                                    {category}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <select
-                    value={sortOption}
-                    onChange={(e) => {
-                        setSortOption(e.target.value)
-                        setCurrentPage(1)
-                    }}
-                    className="rounded-xl mb-5 border border-gray-300 bg-white px-4 py-3 text-sm text-gray-700 shadow-sm outline-none"
-                >
-                    <option value="default">Sort by</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="rating">Top Rated</option>
-                </select>
-
-                {filteredProducts.length === 0 ? (
-                    <div className="rounded-2xl border border-dashed border-gray-300 bg-white py-16 text-center">
-                        <h2 className="text-xl font-semibold text-gray-900">
-                            No products found
-                        </h2>
-
-                        <p className="mt-2 text-gray-500">
-                            Try another search or category.
-                        </p>
-                    </div>
-                ) : (
-                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                        {currentProducts.map((product) => (
-                            <ProductsCard key={product.id} product={product} />
-                        ))}
-                    </div>
-                )}
-                <div className="mt-10 flex justify-center gap-2">
-                    {[...Array(totalPages)].map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentPage(index + 1)}
-                            className={`h-10 w-10 rounded-lg border transition ${currentPage === index + 1
-                                    ? "bg-gray-900 text-white"
-                                    : "bg-white hover:bg-gray-100"
-                                }`}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                </div>
-            </div>
+          <div className="flex flex-wrap justify-center gap-3">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => {
+                  setSelectedCategory(category);
+                  setCurrentPage(1);
+                }}
+                className={`rounded-full px-4 py-2 text-sm font-medium capitalize transition ${
+                  selectedCategory === category
+                    ? "bg-slate-800 text-slate-100 dark:bg-slate-700"
+                    : "border border-slate-300 bg-slate-100 text-slate-600 hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
-    );
+      </div>
+
+      <select
+        value={sortOption}
+        onChange={(e) => {
+          setSortOption(e.target.value);
+          setCurrentPage(1);
+        }}
+        className="
+          mb-5 rounded-xl border border-slate-300
+          bg-slate-100 px-4 py-3
+          text-sm text-slate-700
+          shadow-sm outline-none transition
+          focus:border-slate-700 focus:ring-2 focus:ring-slate-300
+          dark:border-slate-700
+          dark:bg-slate-900
+          dark:text-slate-300
+          dark:focus:border-slate-500
+          dark:focus:ring-slate-700
+        "
+      >
+        <option value="default">Sort by</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+      </select>
+
+      {isLoading ? (
+        <div className="grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <ProductCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : filteredProducts.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 py-16 text-center transition-colors dark:border-slate-700 dark:bg-slate-900">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+            No products found
+          </h2>
+
+          <p className="mt-2 text-slate-600 dark:text-slate-400">
+            Try another search or category.
+          </p>
+        </div>
+      ) : (
+        <div className="grid items-stretch gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {currentProducts.map((product) => (
+            <ProductsCard key={product.id} product={product} />
+          ))}
+        </div>
+      )}
+
+      <div className="mt-10 flex justify-center gap-2">
+        {[...Array(totalPages)].map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            className={`h-10 w-10 rounded-lg border text-sm font-semibold transition ${
+              currentPage === index + 1
+                ? "border-slate-800 bg-slate-800 text-slate-100 dark:border-slate-600 dark:bg-slate-700"
+                : "border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 }
 export default ProductsPage
