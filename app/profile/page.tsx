@@ -21,22 +21,22 @@ const ProfilePage = () => {
         return <LoginRequired />
     }
     return (
-      <div className="min-h-screen bg-slate-100 px-8 py-12 transition-colors dark:bg-slate-950">
-        <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="mb-8">
+      <div className="min-h-screen bg-slate-100 px-4 pb-12 pt-24 transition-colors dark:bg-slate-950 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+          <div className="mb-6 sm:mb-8">
             <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
               Profile Dashboard
             </h1>
 
-            <p className="mt-2 text-slate-500 dark:text-slate-400">
+            <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400 sm:text-base">
               Manage your account and view your activity.
             </p>
           </div>
 
-          <div className="mb-8 rounded-xl border border-slate-200 bg-slate-100 p-5 dark:border-slate-800 dark:bg-slate-800">
+          <div className="mb-6 rounded-xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-800 dark:bg-slate-800 sm:mb-8 sm:p-5">
             <p className="text-sm text-slate-500 dark:text-slate-400">Email</p>
 
-            <p className="mt-1 font-semibold text-slate-900 dark:text-slate-100">
+            <p className="mt-1 break-words font-semibold text-slate-900 dark:text-slate-100">
               {user.email}
             </p>
           </div>

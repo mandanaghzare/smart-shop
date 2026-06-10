@@ -1,4 +1,3 @@
-import { products } from "@/data/products"
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 

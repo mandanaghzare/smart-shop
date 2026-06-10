@@ -21,41 +21,47 @@ const OrdersPage = () => {
     if(!user) return <LoginRequired />
 
     return (
-        <div className="min-h-screen bg-slate-100 px-8 py-12 transition-colors dark:bg-slate-950">
-            <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+        <div className="min-h-screen bg-slate-100 px-4 pb-12 pt-24 transition-colors dark:bg-slate-950 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
                 Orders
             </h1>
 
             {orderItems.length === 0 ? (
-                <div className="mt-6 rounded-xl border border-dashed border-slate-300 py-10 text-center dark:border-slate-700">
+                <div className="mt-6 rounded-2xl border border-dashed border-slate-300 bg-slate-100 px-4 py-12 text-center dark:border-slate-700 dark:bg-slate-800/70">
                 <p className="text-slate-500 dark:text-slate-400">
                     No orders yet.
                 </p>
+
+                <Link
+                    href="/products"
+                    className="mt-6 inline-block rounded-xl bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-100 transition hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600"
+                >
+                    Browse Products
+                </Link>
                 </div>
             ) : (
-                <div className="mt-6 space-y-6">
+                <div className="mt-6 space-y-5">
                 {orderItems.map((order) => (
                     <div
                     key={order.id}
-                    className="rounded-2xl border border-slate-200 bg-slate-100 p-5 shadow-sm dark:border-slate-800 dark:bg-slate-800"
+                    className="rounded-2xl border border-slate-200 bg-slate-100 p-3 sm:p-4 shadow-sm dark:border-slate-800 dark:bg-slate-800"
                     >
-                    <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-4 dark:border-slate-700">
+                    <div className="mb-4 flex items-start justify-between gap-3 border-b border-slate-200 pb-4 dark:border-slate-700">
                         <div>
                         <p className="text-sm text-slate-500 dark:text-slate-400">
                             Order
                         </p>
 
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                        <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-slate-100">
                             #{order.id.slice(0, 4)}
                         </h2>
                         </div>
 
                         <span
-                        className={`${statusStyles[order.status]} rounded-full px-3 py-1 text-sm font-medium`}
+                        className={`${statusStyles[order.status]} rounded-full px-3 py-1 text-xs font-semibold sm:text-sm`}
                         >
-                        {order.status.charAt(0).toUpperCase() +
-                            order.status.slice(1)}
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                         </span>
                     </div>
 
@@ -63,22 +69,12 @@ const OrdersPage = () => {
                         {order.items.map((item) => (
                         <Link
                             href={`/products/${item.id}`}
-                            target="_blank"
                             key={item.id}
-                            className="
-                            block rounded-xl
-                            border border-slate-200
-                            bg-slate-50 p-4
-                            transition
-                            hover:bg-slate-200
-                            dark:border-slate-700
-                            dark:bg-slate-900
-                            dark:hover:bg-slate-700
-                            "
+                            className="block rounded-xl border border-slate-200 bg-slate-50 p-4 transition hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-700"
                         >
-                            <div className="flex items-center justify-between gap-4">
+                            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                             <div className="min-w-0">
-                                <h3 className="truncate font-semibold text-slate-900 dark:text-slate-100">
+                                <h3 className="line-clamp-2 text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100">
                                 {item.title}
                                 </h3>
 
@@ -87,7 +83,7 @@ const OrdersPage = () => {
                                 </p>
                             </div>
 
-                            <p className="shrink-0 font-bold text-slate-900 dark:text-slate-100">
+                            <p className="shrink-0 text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 sm:text-base">
                                 ${item.price.toFixed(2)}
                             </p>
                             </div>
@@ -95,33 +91,33 @@ const OrdersPage = () => {
                         ))}
                     </div>
 
-                    <div className="mt-5 grid gap-3 border-t border-slate-200 pt-4 dark:border-slate-700 sm:grid-cols-3">
-                        <div className="text-center">
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <div className="mt-5 grid grid-cols-3 gap-3 border-t border-slate-200 pt-4 dark:border-slate-700">
+                        <div className="rounded-xl bg-slate-50 p-3 text-center dark:bg-slate-900">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                             Date
                         </p>
 
-                        <p className="font-medium text-slate-900 dark:text-slate-100">
+                        <p className="mt-1 text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                             {order.createdAt}
                         </p>
                         </div>
 
-                        <div className="text-center">
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                        <div className="rounded-xl bg-slate-50 p-3 text-center dark:bg-slate-900">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                             Items
                         </p>
 
-                        <p className="font-medium text-slate-900 dark:text-slate-100">
+                        <p className="mt-1 text-sm font-semibold text-slate-900 dark:text-slate-100">
                             {order.items.length}
                         </p>
                         </div>
 
-                        <div className="text-center">
-                        <p className="text-sm text-slate-500 dark:text-slate-400">
+                        <div className="rounded-xl bg-slate-50 p-3 text-center dark:bg-slate-900">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
                             Total
                         </p>
 
-                        <p className="font-bold text-slate-900 dark:text-slate-100">
+                        <p className="mt-1 text-sm font-bold text-slate-900 dark:text-slate-100">
                             ${order.total.toFixed(2)}
                         </p>
                         </div>

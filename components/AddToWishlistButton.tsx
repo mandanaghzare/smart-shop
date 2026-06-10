@@ -7,15 +7,19 @@ export type AddToWishlistProps = {
     product: Product
 }
 
-const AddToWishlistBotton = ({product}: AddToWishlistProps) => {
-    const addToWishlist = useWishlist((state) => state.addToWishlist)
-    return(
-        <div>
-            <button onClick={() => addToWishlist(product)} className="cursor-pointer rounded-lg bg-red-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-red-600">
-                <FaHeart size={16} />
-            </button>
-        </div>
-    )
-}
+const AddToWishlistButton = ({ product }: AddToWishlistProps) => {
+    const addToWishlist = useWishlist((state) => state.addToWishlist);
 
-export default AddToWishlistBotton
+    return (
+        <button
+            type="button"
+            onClick={() => addToWishlist(product)}
+            aria-label="Add to wishlist"
+            className="flex h-11 cursor-pointer w-11 items-center justify-center rounded-xl border border-slate-600/60 bg-slate-900/30 text-slate-100 shadow-sm backdrop-blur transition hover:border-rose-400 hover:bg-rose-500 hover:text-white"
+        >
+            <FaHeart size={18} />
+        </button>
+    );
+};
+
+export default AddToWishlistButton
