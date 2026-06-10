@@ -6,7 +6,7 @@ import LoginRequired from "../login/LoginRequired"
 import Link from "next/link"
 
 
-const WishistPage = () => {
+const WishlistPage = () => {
     const user = useAuthStore((state) => state.user)
     const hasHydrated = useAuthStore((state) => state.hasHydrated);
     const wishlistItems = useWishlist((state) => state.wishlistItems)
@@ -102,4 +102,4 @@ const WishistPage = () => {
     );
 }
 
-export default WishistPage;
+export default WishlistPage;
