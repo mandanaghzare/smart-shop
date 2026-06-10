@@ -1,36 +1,196 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛍️ Smart Shop
 
-## Getting Started
+A modern and responsive e-commerce web application built with Next.js, TypeScript, Tailwind CSS, and Zustand.
 
-First, run the development server:
+## 🚀 Live Demo
+
+https://smart-shop-liard.vercel.app/
+
+## 📂 GitHub Repository
+
+https://github.com/mandanaghzare/smart-shop
+
+---
+
+## 📖 Overview
+
+Smart Shop is a fully responsive e-commerce application that allows users to browse products, view product details, manage their shopping cart, save favorite items, place orders, and track purchase history.
+
+The project focuses on clean UI design, state management, responsive layouts, dark mode support, and modern frontend development practices.
+
+---
+
+## ✨ Features
+
+### Product Browsing
+
+- Browse products from multiple categories
+- Category filtering
+- Product cards with pricing and discounts
+- Product details page
+
+### Shopping Experience
+
+- Add products to cart
+- Update cart quantity
+- Remove products from cart
+- Wishlist management
+- Related products suggestions
+
+### Checkout Flow
+
+- Order placement
+- Automatic order creation
+- Cart clearing after checkout
+- Order history tracking
+
+### User Account
+
+- Mock authentication system
+- Register page
+- Login page
+- Profile dashboard
+- Orders overview
+
+### UI & UX
+
+- Fully responsive design
+- Dark mode support
+- Modern card-based interface
+- Persistent client-side state
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+
+### State Management
+
+- Zustand
+- Local Storage Persistence
+
+### Deployment
+
+- Vercel
+
+---
+
+## 📸 Screenshots
+
+### Home Page
+
+![Home](public/screenshots/home.png)
+
+### Product Details
+
+![Product Details](public/screenshots/product-details.png)
+
+### Shopping Cart
+
+![Cart](public/screenshots/cart.png)
+
+### Orders Page
+
+![Orders](public/screenshots/orders.png)
+
+---
+
+## 📦 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/mandanaghzare/smart-shop.git
+```
+
+Navigate to the project:
+
+```bash
+cd smart-shop
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```txt
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📁 Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```txt
+app/
+├── cart/
+├── checkout/
+├── login/
+├── orders/
+├── products/
+├── profile/
+├── register/
+├── wishlist/
+├── layout.tsx
+└── page.tsx
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+components/
+store/
+types/
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔐 Authentication
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project uses a mock authentication system built with:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Zustand
+- Local Storage
+
+Authentication is implemented for learning and portfolio purposes and does not use a backend service.
+
+---
+
+## 🎯 Learning Goals
+
+This project was built to practice:
+
+- Next.js App Router
+- TypeScript
+- Zustand State Management
+- Responsive Design
+- Dark Mode Implementation
+- Component Architecture
+- E-commerce User Flows
+
+---
+
+## 🌐 Deployment
+
+The application is deployed on Vercel:
+
+https://smart-shop-liard.vercel.app/
+
+---
+
+## 👩‍💻 Author
+
+GitHub:
+https://github.com/mandanaghzare
