@@ -3,10 +3,10 @@ import ProductsCard from "@/components/ProductCard"
 import ProductCardSkeleton from "@/components/ProductCardSkeleton"
 import { products } from "@/data/products"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 
 
-const ProductsPage = () => {
+const ProductsPageContent  = () => {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -248,4 +248,12 @@ const ProductsPage = () => {
       </div>
     );
 }
-export default ProductsPage
+const ProductsPage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsPageContent />
+    </Suspense>
+  );
+};
+
+export default ProductsPage;
