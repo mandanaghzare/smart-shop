@@ -308,7 +308,7 @@
             "price": 49.99,
             "discountPercentage": 1.89,
             "rating": 4.37,
-            "stock": 29,
+            "stock": 0,
             "tags": [
                 "fragrances",
                 "perfumes"
@@ -866,7 +866,7 @@
             "price": 799.99,
             "discountPercentage": 8.8,
             "rating": 3.59,
-            "stock": 7,
+            "stock": 0,
             "tags": [
                 "furniture",
                 "bathroom"
@@ -928,7 +928,7 @@
             "price": 1.99,
             "discountPercentage": 12.62,
             "rating": 4.19,
-            "stock": 8,
+            "stock": 0,
             "tags": [
                 "fruits"
             ],

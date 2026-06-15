@@ -20,6 +20,7 @@ const ProductsPageContent  = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "");
     const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "");
+    const [inStockOnly, setInStockOnly] = useState( searchParams.get("stock") === "in")
 
     const filteredProducts = products.filter((product) => {
         const matchesSearch = product.title
@@ -31,8 +32,10 @@ const ProductsPageContent  = () => {
         const matchesPrice = 
           product.price >= Number(minPrice || "0") &&
           product.price <= Number(maxPrice || Infinity)
+
+        const matchesInStock = !inStockOnly || product.stock > 0
             
-        return matchesCategory && matchesSearch && matchesPrice;
+        return matchesCategory && matchesSearch && matchesPrice && matchesInStock;
     })
     const sortedProducts = [...filteredProducts].sort((a, b) => {
         if (sortOption === "price-low") {
@@ -49,6 +52,7 @@ const ProductsPageContent  = () => {
 
         return 0
     })
+    
 
     const currentProducts =
         sortedProducts.slice(
@@ -76,8 +80,18 @@ const ProductsPageContent  = () => {
       if(key !== "page") {
         params.set("page", "1")
       }
-      console.log(pathname)
       router.push(`${pathname}?${params.toString()}`)
+    }
+
+    const handleClearFilter = () => {
+      setInStockOnly(false);
+      setMaxPrice("")
+      setMinPrice("")
+      setSearchItem("")
+      setSelectedCategory("all")
+      setSortOption("default")
+      setCurrentPage(1)
+      router.push(pathname)
     }
 
     useEffect(() => {
@@ -100,14 +114,14 @@ const ProductsPageContent  = () => {
             </p>
           </div>
 
-          <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+          <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900 sm:p-6">
             <div className="flex flex-col items-center gap-5">
               <input
                 type="text"
                 placeholder="Search products..."
                 value={searchItem}
                 onChange={(e) => {
-                  const value = e.target.value
+                  const value = e.target.value;
                   setSearchItem(value);
                   setCurrentPage(1);
                   updateUrlParams("search", value);
@@ -124,9 +138,9 @@ const ProductsPageContent  = () => {
                       setCurrentPage(1);
                       updateUrlParams("category", category);
                     }}
-                    className={`rounded-full px-3.5 py-2 text-sm font-medium capitalize transition sm:px-4 ${
+                    className={`rounded-full px-4 py-2 text-sm font-medium capitalize transition ${
                       selectedCategory === category
-                        ? "bg-slate-800 text-slate-100 dark:bg-slate-700"
+                        ? "bg-slate-800 text-slate-100 shadow-sm dark:bg-slate-700"
                         : "border border-slate-300 bg-slate-100 text-slate-600 hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700"
                     }`}
                   >
@@ -137,68 +151,124 @@ const ProductsPageContent  = () => {
             </div>
           </div>
 
-          <select
-            value={sortOption}
-            onChange={(e) => {
-              const value = e.target.value
-              setSortOption(value);
-              setCurrentPage(1);
-              updateUrlParams("category", value);
-            }}
-            className="mb-5 w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-slate-700 focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:focus:border-slate-500 dark:focus:ring-slate-700 sm:w-44"
-          >
-            <option value="default">Sort by</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="rating">Top Rated</option>
-          </select>
-          <div className="w-full max-w-lg rounded-2xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-700 dark:bg-slate-800">
-            <h2 className="mb-4 text-sm font-bold text-slate-900 dark:text-slate-100">
-              Price Range
-            </h2>
+        <div className="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-sm transition-colors dark:border-slate-800 dark:bg-slate-900 sm:p-6">
+          <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                Filters
+              </h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Refine products by price, availability, and sorting.
+              </p>
+            </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
-                  Min Price
-                </span>
+            <button
+              type="button"
+              onClick={handleClearFilter}
+              className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-rose-300 hover:bg-rose-50 hover:text-rose-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-rose-500 dark:hover:bg-rose-950 dark:hover:text-rose-300 sm:w-auto"
+            >
+              Clear Filters
+            </button>
+          </div>
 
-                <input
-                  type="number"
-                  min="0"
-                  placeholder="0"
-                  value={minPrice}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setCurrentPage(1);
-                    setMinPrice(value);
-                    updateUrlParams("minPrice", value);
-                  }}
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-700 focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-500 dark:focus:ring-slate-700"
-                />
+          <div className="grid gap-5 lg:grid-cols-[220px_1fr_1fr]">
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
+                Sort Products
               </label>
 
-              <label className="block">
-                <span className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
-                  Max Price
-                </span>
+              <select
+                value={sortOption}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSortOption(value);
+                  setCurrentPage(1);
+                  updateUrlParams("sort", value);
+                }}
+                className="w-full rounded-xl border border-slate-300 bg-slate-100 px-4 py-3 text-sm text-slate-700 shadow-sm outline-none transition focus:border-slate-700 focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:focus:border-slate-500 dark:focus:ring-slate-700"
+              >
+                <option value="default">Sort by</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-700 dark:bg-slate-800">
+              <h3 className="mb-4 text-sm font-bold text-slate-900 dark:text-slate-100">
+                Price Range
+              </h3>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
+                    Min Price
+                  </span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="0"
+                    value={minPrice}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setCurrentPage(1);
+                      setMinPrice(value);
+                      updateUrlParams("minPrice", value);
+                    }}
+                    className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-700 focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-500 dark:focus:ring-slate-700"
+                  />
+                </label>
+
+                <label className="block">
+                  <span className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-400">
+                    Max Price
+                  </span>
+
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="No limit"
+                    value={maxPrice}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setCurrentPage(1);
+                      setMaxPrice(value);
+                      updateUrlParams("maxPrice", value);
+                    }}
+                    className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-700 focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-500 dark:focus:ring-slate-700"
+                  />
+                </label>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-slate-200 bg-slate-100 p-4 dark:border-slate-700 dark:bg-slate-800">
+              <label className="flex h-full cursor-pointer items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                    Availability
+                  </p>
+
+                  <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                    Show only products that are currently in stock.
+                  </p>
+                </div>
 
                 <input
-                  type="number"
-                  min="0"
-                  placeholder="No limit"
-                  value={maxPrice}
+                  type="checkbox"
+                  checked={inStockOnly}
                   onChange={(e) => {
-                    const value = e.target.value;
+                    const checked = e.target.checked;
+                    setInStockOnly(checked);
                     setCurrentPage(1);
-                    setMaxPrice(value);
-                    updateUrlParams("maxPrice", value);
+                    updateUrlParams("stock", checked ? "in" : "");
                   }}
-                  className="w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-slate-700 focus:ring-2 focus:ring-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:focus:border-slate-500 dark:focus:ring-slate-700"
+                  className="h-5 w-5 shrink-0 cursor-pointer rounded border-slate-300 accent-slate-800 dark:border-slate-600"
                 />
               </label>
             </div>
           </div>
+        </div>
 
           {isLoading ? (
             <div className="grid items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-4">
