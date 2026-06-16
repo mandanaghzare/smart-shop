@@ -4,6 +4,7 @@ import { useWishlist } from "@/store/wishlistStore"
 import Image from "next/image"
 import LoginRequired from "../login/LoginRequired"
 import Link from "next/link"
+import { toast } from "sonner"
 
 
 const WishlistPage = () => {
@@ -87,7 +88,10 @@ const WishlistPage = () => {
 
                                     <button
                                         type="button"
-                                        onClick={() => removeFromWishlist(item.id)}
+                                        onClick={() => {
+                                            removeFromWishlist(item.id)
+                                            toast.info("Removed from wishlist");
+                                        }}
                                         className="rounded-xl bg-rose-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
                                     >
                                         Delete

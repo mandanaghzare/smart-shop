@@ -6,6 +6,7 @@ import Link from "next/link"
 import { FaTrash } from "react-icons/fa"
 import LoginRequired from "../login/LoginRequired"
 import { useAuthStore } from "@/store/authStore"
+import { toast } from "sonner"
 
 
 
@@ -98,7 +99,10 @@ const CartPage = () => {
                       </p>
 
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => {
+                          removeFromCart(item.id)
+                          toast.info("Item removed from cart");
+                        }}
                         aria-label="Remove item"
                         className="rounded-lg p-2 text-rose-400 transition hover:bg-rose-950"
                       >

@@ -2,6 +2,7 @@
 import { useWishlist } from "@/store/wishlistStore"
 import { Product } from "@/types/product"
 import { FaHeart } from "react-icons/fa"
+import { toast } from "sonner"
 
 export type AddToWishlistProps = {
     product: Product
@@ -13,7 +14,10 @@ const AddToWishlistButton = ({ product }: AddToWishlistProps) => {
     return (
         <button
             type="button"
-            onClick={() => addToWishlist(product)}
+            onClick={() => {
+                addToWishlist(product);
+                toast.success(`${product.title} added to wishlist`);
+            }}
             aria-label="Add to wishlist"
             className="flex h-11 cursor-pointer w-11 items-center justify-center rounded-xl border border-slate-600/60 bg-slate-900/30 text-slate-100 shadow-sm backdrop-blur transition hover:border-rose-400 hover:bg-rose-500 hover:text-white"
         >
