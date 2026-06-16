@@ -16,13 +16,17 @@ const Navbar = () => {
     const cartItems = useCartStore((state) => state.cartItems);
     const { darkMode, toggleTheme, initTheme } = useThemeStore();
     const hasHydrated = useAuthStore((state) => state.hasHydrated);
-
+    const initAuth = useAuthStore((state) => state.initAuth);
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         initTheme();
     }, [initTheme]);
+
+    useEffect(() => {
+        initAuth();
+    }, [initAuth]);
 
     const handleLogout = () => {
         logout();
@@ -40,7 +44,6 @@ const Navbar = () => {
         ? "bg-slate-200 text-slate-950 dark:bg-slate-800 dark:text-white"
         : "text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
     }`;
-
     return (
         <nav className="fixed left-0 right-0 top-0 z-50 border-b border-slate-200 bg-slate-50/90 px-4 py-4 backdrop-blur-md transition-colors dark:border-slate-900 dark:bg-slate-950/90 sm:px-8">
             <div className="mx-auto flex max-w-6xl items-center justify-between">

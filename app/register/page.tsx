@@ -1,6 +1,9 @@
 "use client"
 
+import { useAuthStore } from "@/store/authStore";
+import { FirebaseError } from "firebase/app";
 import Link from "next/link"
+import { useRouter } from "next/navigation";
 import { useState } from "react"
 
 
@@ -14,6 +17,9 @@ const RegisterPage = () => {
   }
   const [formValues, setFormValues] = useState(initialRegisterState)
   const [message, setMessage] = useState("")
+  const [isLoading, setIsLoading] = useState(false);
+  const register = useAuthStore((state) => state.register);
+  const router = useRouter();
 
   
   const fakeUsers = [
@@ -23,21 +29,62 @@ const RegisterPage = () => {
     },
   ]
 
-  const handleSubmit = () => {
-    if (!formValues.fullName || !formValues.email || !formValues.password || !formValues.confirmPassword) {
-      setMessage("Fill the field")
-      return
+  const handleSubmit = async () => {
+    setMessage("");
+
+    if (
+      !formValues.fullName ||
+      !formValues.email ||
+      !formValues.password ||
+      !formValues.confirmPassword
+    ) {
+      setMessage("Please fill in all fields");
+      return;
     }
+
+    if (!formValues.email.includes("@")) {
+      setMessage("Please enter a valid email address");
+      return;
+    }
+
+    if (formValues.password.length < 8) {
+      setMessage("Password must be at least 8 characters");
+      return;
+    }
+
     if (formValues.password !== formValues.confirmPassword) {
-      setMessage("Password is not correct")
-      return
+      setMessage("Passwords do not match");
+      return;
     }
-    if(fakeUsers.find((user) => user.email === formValues.email)){
-      setMessage("An account with this email already exists")
-      return
+
+    try {
+      setIsLoading(true);
+
+      await register(formValues.email, formValues.password);
+
+      setMessage("Account created successfully");
+
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/email-already-in-use") {
+          setMessage("An account with this email already exists");
+        } else if (error.code === "auth/invalid-email") {
+          setMessage("Please enter a valid email address");
+        } else if (error.code === "auth/weak-password") {
+          setMessage("Password is too weak");
+        } else {
+          setMessage("Registration failed. Please try again.");
+        }
+      } else {
+        setMessage("Something went wrong.");
+      }
+    } finally {
+      setIsLoading(false);
     }
-    setMessage("Success")
-  }
+  };
 
 
     return (
@@ -184,6 +231,7 @@ const RegisterPage = () => {
 
             <button
               type="submit"
+              disabled={isLoading}
               className="
                 w-full rounded-xl
                 bg-slate-800
@@ -192,12 +240,14 @@ const RegisterPage = () => {
                 text-slate-100
                 transition
                 hover:bg-slate-700
+                disabled:cursor-not-allowed
+                disabled:opacity-60
 
                 dark:bg-slate-700
                 dark:hover:bg-slate-600
               "
             >
-              Create account
+              {isLoading ? "Creating account..." : "Create account"}
             </button>
 
             {message && (
