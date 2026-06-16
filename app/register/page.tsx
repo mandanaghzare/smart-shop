@@ -5,6 +5,7 @@ import { FirebaseError } from "firebase/app";
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 import { useState } from "react"
+import { toast } from "sonner";
 
 
 
@@ -16,21 +17,13 @@ const RegisterPage = () => {
     confirmPassword: ''
   }
   const [formValues, setFormValues] = useState(initialRegisterState)
-  const [message, setMessage] = useState("")
   const [isLoading, setIsLoading] = useState(false);
   const register = useAuthStore((state) => state.register);
   const router = useRouter();
 
   
-  const fakeUsers = [
-    {
-      email: "test@gmail.com",
-      password: "12345678",
-    },
-  ]
 
   const handleSubmit = async () => {
-    setMessage("");
 
     if (
       !formValues.fullName ||
@@ -38,22 +31,22 @@ const RegisterPage = () => {
       !formValues.password ||
       !formValues.confirmPassword
     ) {
-      setMessage("Please fill in all fields");
+      toast.error("Please fill in all fields");
       return;
     }
 
     if (!formValues.email.includes("@")) {
-      setMessage("Please enter a valid email address");
+      toast.error("Please enter a valid email address");
       return;
     }
 
     if (formValues.password.length < 8) {
-      setMessage("Password must be at least 8 characters");
+      toast.error("Password must be at least 8 characters");
       return;
     }
 
     if (formValues.password !== formValues.confirmPassword) {
-      setMessage("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
 
@@ -62,7 +55,7 @@ const RegisterPage = () => {
 
       await register(formValues.email, formValues.password);
 
-      setMessage("Account created successfully");
+      toast.success("Account created successfully");
 
       setTimeout(() => {
         router.push("/");
@@ -70,16 +63,16 @@ const RegisterPage = () => {
     } catch (error) {
       if (error instanceof FirebaseError) {
         if (error.code === "auth/email-already-in-use") {
-          setMessage("An account with this email already exists");
+          toast.error("An account with this email already exists");
         } else if (error.code === "auth/invalid-email") {
-          setMessage("Please enter a valid email address");
+          toast.error("Please enter a valid email address");
         } else if (error.code === "auth/weak-password") {
-          setMessage("Password is too weak");
+          toast.error("Password is too weak");
         } else {
-          setMessage("Registration failed. Please try again.");
+          toast.error("Registration failed. Please try again.");
         }
       } else {
-        setMessage("Something went wrong.");
+        toast.error("Something went wrong.");
       }
     } finally {
       setIsLoading(false);
@@ -249,12 +242,6 @@ const RegisterPage = () => {
             >
               {isLoading ? "Creating account..." : "Create account"}
             </button>
-
-            {message && (
-              <p className="text-sm text-red-500">
-                {message}
-              </p>
-            )}
           </form>
 
           <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">

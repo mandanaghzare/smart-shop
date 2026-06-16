@@ -32,6 +32,7 @@ const Navbar = () => {
         logout();
         setIsOpen(false);
         router.push("/");
+        toast.success("Logged out")
     };
 
     const closeMenu = () => setIsOpen(false);

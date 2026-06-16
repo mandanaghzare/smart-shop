@@ -4,6 +4,7 @@ import { FirebaseError } from "firebase/app";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 
 
 const LoginPage = () => {
@@ -13,32 +14,23 @@ const LoginPage = () => {
     }
     const [loginForm, setLoginForm] = useState(initialLoginState)
     const [isLoading, setIsLoading] = useState(false);
-    const [message, setMessage] = useState("")
     const login = useAuthStore((state) => state.login)
     const router = useRouter()
 
-    const fakeUsers = [
-      {
-        email: loginForm.email,
-        password: loginForm.password,
-      },
-    ]
-
     const handleSubmit = async () => {
-      setMessage("");
 
       if (!loginForm.email || !loginForm.password) {
-        setMessage("Please fill in all fields");
+        toast.error("Please fill in all fields");
         return;
       }
 
       if (!loginForm.email.includes("@")) {
-        setMessage("Please enter a valid email address");
+        toast.error("Please enter a valid email address");
         return;
       }
 
       if (loginForm.password.length < 8) {
-        setMessage("Password must be at least 8 characters");
+        toast.error("Password must be at least 8 characters");
         return;
       }
 
@@ -47,7 +39,7 @@ const LoginPage = () => {
 
         await login(loginForm.email, loginForm.password);
 
-        setMessage("Login successful");
+        toast.success("Login successful");
 
         setTimeout(() => {
           router.push("/");
@@ -55,16 +47,16 @@ const LoginPage = () => {
       } catch (error) {
         if (error instanceof FirebaseError) {
           if (error.code === "auth/user-not-found") {
-            setMessage("No account found with this email");
+            toast.error("No account found with this email");
           } else if (error.code === "auth/wrong-password") {
-            setMessage("Incorrect password");
+            toast.error("Incorrect password");
           } else if (error.code === "auth/invalid-credential") {
-            setMessage("Invalid email or password");
+            toast.error("Invalid email or password");
           } else {
-            setMessage("Login failed. Please try again.");
+            toast.error("Login failed. Please try again.");
           }
         } else {
-          setMessage("Something went wrong.");
+          toast.error("Something went wrong.");
         }
       } finally {
         setIsLoading(false);
@@ -168,11 +160,6 @@ const LoginPage = () => {
             {isLoading ? "Logging in..." : "Login"}
           </button>
 
-          {message && (
-            <p className="text-sm text-green-600 dark:text-green-400">
-              {message}
-            </p>
-          )}
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
