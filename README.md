@@ -1,6 +1,6 @@
 # 🛍️ Smart Shop
 
-A modern and responsive e-commerce web application built with Next.js, TypeScript, Tailwind CSS, and Zustand.
+A modern, fully responsive e-commerce web application built with Next.js, TypeScript, Tailwind CSS, Zustand, and Firebase Authentication.
 
 ## 🚀 Live Demo
 
@@ -14,50 +14,72 @@ https://github.com/mandanaghzare/smart-shop
 
 ## 📖 Overview
 
-Smart Shop is a fully responsive e-commerce application that allows users to browse products, view product details, manage their shopping cart, save favorite items, place orders, and track purchase history.
+Smart Shop is a feature-rich e-commerce application that allows users to browse products, search and filter items, manage a shopping cart and wishlist, authenticate securely, place orders, and track purchase history.
 
-The project focuses on clean UI design, state management, responsive layouts, dark mode support, and modern frontend development practices.
+The project was built to demonstrate modern frontend development practices, global state management, URL-based filtering, authentication workflows, and responsive UI design.
 
 ---
 
 ## ✨ Features
 
-### Product Browsing
+### 🛒 Product Catalog
 
-- Browse products from multiple categories
-- Category filtering
-- Product cards with pricing and discounts
-- Product details page
+* Browse products across multiple categories
+* Product details page
+* Discount pricing display
+* Product ratings and stock status
+* Related product recommendations
+* Recently viewed products
 
-### Shopping Experience
+### 🔍 Advanced Filtering
 
-- Add products to cart
-- Update cart quantity
-- Remove products from cart
-- Wishlist management
-- Related products suggestions
+* Category filtering
+* Search functionality
+* Price range filtering
+* Stock availability filtering
+* Sorting options
+* URL-synced filters using query parameters
+* Filter persistence after page refresh
 
-### Checkout Flow
+### ❤️ Wishlist
 
-- Order placement
-- Automatic order creation
-- Cart clearing after checkout
-- Order history tracking
+* Add products to wishlist
+* Remove products from wishlist
+* Persistent wishlist storage
 
-### User Account
+### 🛍️ Shopping Cart
 
-- Mock authentication system
-- Register page
-- Login page
-- Profile dashboard
-- Orders overview
+* Add products to cart
+* Update quantities
+* Remove products
+* Persistent cart state
+* Cart summary calculations
 
-### UI & UX
+### 📦 Checkout & Orders
 
-- Fully responsive design
-- Dark mode support
-- Modern card-based interface
-- Persistent client-side state
+* Checkout page
+* Order placement flow
+* Automatic cart clearing after checkout
+* Order history tracking
+
+### 🔐 Authentication
+
+* Firebase Authentication
+* Email & Password Registration
+* Email & Password Login
+* Persistent authentication state
+* Protected Routes
+* Route guarding for authenticated pages
+
+### 🎨 UI & UX
+
+* Fully responsive design
+* Dark / Light mode
+* Skeleton loading states
+* Toast notifications
+* Modern card-based interface
+* Accessible navigation
+* Loading and hydration handling
 
 ---
 
@@ -65,19 +87,23 @@ The project focuses on clean UI design, state management, responsive layouts, da
 
 ### Frontend
 
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
+* Next.js (App Router)
+* React
+* TypeScript
+* Tailwind CSS
 
 ### State Management
 
-- Zustand
-- Local Storage Persistence
+* Zustand
+* Zustand Persist Middleware
+
+### Authentication
+
+* Firebase Authentication
 
 ### Deployment
 
-- Vercel
+* Vercel
 
 ---
 
@@ -121,7 +147,7 @@ Install dependencies:
 npm install
 ```
 
-Run development server:
+Run the development server:
 
 ```bash
 npm run dev
@@ -144,6 +170,7 @@ app/
 ├── login/
 ├── orders/
 ├── products/
+│   └── [id]/
 ├── profile/
 ├── register/
 ├── wishlist/
@@ -152,39 +179,34 @@ app/
 
 components/
 store/
+lib/
 types/
+data/
 ```
 
 ---
 
-## 🔐 Authentication
+## 🎯 What I Practiced
 
-This project uses a mock authentication system built with:
-
-- Zustand
-- Local Storage
-
-Authentication is implemented for learning and portfolio purposes and does not use a backend service.
-
----
-
-## 🎯 Learning Goals
-
-This project was built to practice:
-
-- Next.js App Router
-- TypeScript
-- Zustand State Management
-- Responsive Design
-- Dark Mode Implementation
-- Component Architecture
-- E-commerce User Flows
+* Next.js App Router
+* Dynamic Routing
+* TypeScript
+* Zustand State Management
+* Firebase Authentication
+* Protected Routes
+* URL Query Parameters
+* Responsive Design
+* Dark Mode Implementation
+* Toast Notifications
+* Component Architecture
+* E-commerce User Flows
+* Deployment with Vercel
 
 ---
 
 ## 🌐 Deployment
 
-The application is deployed on Vercel:
+Deployed on Vercel:
 
 https://smart-shop-liard.vercel.app/
 
