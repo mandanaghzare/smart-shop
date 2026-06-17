@@ -4,10 +4,13 @@ import { useOrderStor } from "@/store/orderStore"
 import { CartItem } from "@/store/cartStore";
 import { useState } from "react"
 import Link from "next/link";
+import { useAuthStore } from "@/store/authStore";
+import LoginRequired from "../login/LoginRequired";
 
 
 const CheckoutPage = () => {
     const cartItems = useCartStore((state) => state.cartItems)
+    const user = useAuthStore((state) => state.user)
     const clearCart = useCartStore((state) => state.clearCart)
     const subTotal = cartItems.reduce((total,item) => total + item.price * item.quantity , 0)
     const shipping = subTotal > 200 ? 0 : 20
@@ -37,6 +40,10 @@ const CheckoutPage = () => {
         clearCart();
         setIsOrderPlaced(true);
     };
+
+    if (!user) {
+        return <LoginRequired />
+    }
 
     return (
         <div className="min-h-screen overflow-x-hidden bg-slate-100 px-4 pb-12 pt-24 transition-colors dark:bg-slate-950 sm:px-6 lg:px-8">

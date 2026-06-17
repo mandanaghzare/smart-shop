@@ -8,6 +8,7 @@ import { Menu, Moon, Sun, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const Navbar = () => {
     const user = useAuthStore((state) => state.user);
