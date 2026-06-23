@@ -8,7 +8,7 @@
       "price": 9.99,
       "discountPercentage": 10.48,
       "rating": 2.56,
-      "stock": 200,
+      "stock": 190,
       "tags": [
         "beauty",
         "mascara"
@@ -1797,23 +1797,6 @@
         "https://cdn.dummyjson.com/product-images/groceries/kiwi/1.webp"
       ],
       "thumbnail": "https://cdn.dummyjson.com/product-images/groceries/kiwi/thumbnail.webp"
-    },
-    {
-      "id": "2fb10d8f-b52a-4f23-a25e-a49681ecc349",
-      "title": "ss",
-      "brand": "ss",
-      "category": "d",
-      "price": 2,
-      "stock": 3,
-      "discount": 3,
-      "description": "",
-      "rating": 3,
-      "image": "",
-      "meta": {
-        "createdAt": "2026-06-23T16:54:14.159Z",
-        "updatedAt": "2026-06-23T16:54:14.159Z"
-      },
-      "reviews": []
     }
   ],
   "total": 194,

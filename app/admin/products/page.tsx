@@ -142,6 +142,18 @@ export default function AdminProductsPage() {
                         ))}
                     </tbody>
                 </table>
+                {filteredProducts.length === 0 ? (
+                    <div className="rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+                        <h3 className="text-sm font-semibold text-gray-900">No products found</h3>
+                        <p className="mt-1 text-sm text-gray-500">
+                        Try a different search keyword.
+                        </p>
+                    </div>
+                    ) : (
+                    <table>
+                        ...
+                    </table>
+                )}
             </div>
         </div>
     </div>

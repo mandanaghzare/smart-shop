@@ -31,6 +31,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
     const [description, setDescription] = useState(product.description);
     const [rating, setRating] = useState(product.rating);
     const [imageUrl, setImageUrl] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -46,29 +47,29 @@ export default function EditProductForm({ product }: EditProductFormProps) {
             description,
             imageUrl,
         };
-
+        setIsSubmitting(true);
         const response = await fetch(`/api/products/${product.id}`, {
             method: "PATCH",
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(updatedProduct),
         });
-
+        
+        setIsSubmitting(false);
         const data = await response.json();
-
         if (!response.ok) {
             toast.error(data.message || "Failed to update product");
             return;
         }
-
+        
         toast.success(data.message || "Product updated successfully");
         router.push(`/admin/products/${product.id}`);
     };
-
-
-  return (
-    <div>
+    
+    
+    return (
+        <div>
         <div className="mb-6">
             <p className="text-sm text-gray-500">Edit Product</p>
             <h1 className="mt-1 text-3xl font-bold text-gray-900">{title}</h1>
@@ -185,9 +186,10 @@ export default function EditProductForm({ product }: EditProductFormProps) {
 
                 <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                 >
-                    Save Changes
+                    {isSubmitting ? "Saving..." : "Save Changes"}
                 </button>
             </div>
         </form>

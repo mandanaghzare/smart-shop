@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import { toast } from "sonner";
 
@@ -10,9 +11,12 @@ type DeleteProductButtonProps = {
 };
 
 export default function DeleteProductButton({
+
   id, variant
 }: DeleteProductButtonProps) {
   const router = useRouter();
+  
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
@@ -20,7 +24,7 @@ export default function DeleteProductButton({
     );
 
     if (!confirmed) return;
-
+    setIsDeleting(true);
     try {
       const response = await fetch(`/api/products/${id}`, {
         method: "DELETE",
@@ -36,15 +40,17 @@ export default function DeleteProductButton({
       router.refresh();
     } catch {
       toast.error("Something went wrong");
+      setIsDeleting(false);
     }
   };
 
   return (
     <button
       onClick={handleDelete}
+      disabled={isDeleting}
       className="rounded-lg border cursor-pointer border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
     >
-      {variant === "icon" ? <BiTrash /> : "Delete"}
+      {isDeleting ? "Deleting..." : variant === "icon" ? <BiTrash /> : "Delete"}
     </button>
   );
 }

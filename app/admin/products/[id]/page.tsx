@@ -2,8 +2,8 @@
   import Image from "next/image";
   import Link from "next/link";
   import { FaStar } from "react-icons/fa";
-import DeleteProductButton from "../DeleteProductButton";
-import { BiArrowBack } from "react-icons/bi";
+  import DeleteProductButton from "../DeleteProductButton";
+  import { BiArrowBack } from "react-icons/bi";
 
   function InfoItem({ label, value }: { label: string; value: string | number }) {
     return (
@@ -31,6 +31,7 @@ import { BiArrowBack } from "react-icons/bi";
   }) {
       const id = (await params).id;    
       const item = products.find((product) => product.id === id) 
+      
 
       if (!item) {
           return <div>Product not found</div>;

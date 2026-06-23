@@ -31,10 +31,11 @@ export default function AddProductPage({  }: EditProductFormProps) {
     const [description, setDescription] = useState("");
     const [rating, setRating] = useState(0);
     const [imageUrl, setImageUrl] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
-
+        
         const updatedProduct = {
             title,
             brand,
@@ -46,7 +47,7 @@ export default function AddProductPage({  }: EditProductFormProps) {
             description,
             imageUrl,
         };
-
+        setIsSubmitting(true);
         const response = await fetch("/api/products", {
             method: "POST",
             headers: {
@@ -54,7 +55,7 @@ export default function AddProductPage({  }: EditProductFormProps) {
             },
             body: JSON.stringify(updatedProduct),
             });
-
+            setIsSubmitting(false);
             const data = await response.json();
 
             console.log(data);
@@ -178,9 +179,10 @@ export default function AddProductPage({  }: EditProductFormProps) {
 
                 <button
                     type="submit"
+                    disabled={isSubmitting}
                     className="rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                 >
-                    Create Product
+                    {isSubmitting ? "Creating..." : "Create Product"}
                 </button>
             </div>
         </form>
