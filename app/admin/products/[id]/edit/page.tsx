@@ -14,6 +14,8 @@ export default async function EditProductPage ({
         )
     }
   return (
-        <EditProductForm product={item} />
+        <>
+            <EditProductForm product={item} />
+        </>
     );
 }

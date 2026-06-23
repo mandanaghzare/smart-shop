@@ -4,9 +4,13 @@ import { useState } from "react";
 import { products } from "@/data/products";
 import { FaStar } from "react-icons/fa";
 import { BiEditAlt, BiTrash } from "react-icons/bi";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import DeleteProductButton from "./DeleteProductButton";
 
 export default function AdminProductsPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter()
 
   const filteredProducts = products.filter((product) =>
     product.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -21,8 +25,10 @@ export default function AdminProductsPage() {
                 </p>
             </div>
 
-            <button className="rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800">
-            Add Product
+            <button 
+                onClick={() => router.push(`/admin/products/add`)}
+                className="rounded-lg bg-gray-950 px-4 py-2 cursor-pointer text-sm font-medium text-white transition hover:bg-gray-800">
+                Add Product
             </button>
         </div>
 
@@ -73,13 +79,13 @@ export default function AdminProductsPage() {
                             className="border-b border-gray-100 transition hover:bg-gray-50"
                         >
                             <td className="px-6 py-4">
-                                {product.id}
+                                {product.id.slice(0,4)}
                             </td>
                             <td className="px-6 py-4">
                                 <div>
-                                    <p className="line-clamp-1 text-sm font-semibold text-gray-900">
+                                    <Link href={`/admin/products/${product.id}`}>
                                         {product.title}
-                                    </p>
+                                    </Link>
                                     <p className="mt-1 text-xs text-gray-500">
                                         {product.brand}
                                     </p>
@@ -123,13 +129,13 @@ export default function AdminProductsPage() {
 
                             <td className="px-6 py-4 text-right">
                                 <div className="flex justify-end gap-2">
-                                    <button className="rounded-lg border cursor-pointer  cursor-pointer-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-950">
+                                    <button 
+                                        onClick={() => router.push(`/admin/products/${product.id}/edit`)}
+                                        className="rounded-lg border cursor-pointer  cursor-pointer-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 transition hover:bg-gray-50 hover:text-gray-950">
                                         <BiEditAlt />
                                     </button>
 
-                                    <button className="rounded-lg border cursor-pointer border-red-200 px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 hover:border-red-300 hover:text-red-600">
-                                        <BiTrash />
-                                    </button>
+                                    <DeleteProductButton variant="icon" id={String(product.id)} />
                                 </div>
                             </td>
                         </tr>

@@ -20,19 +20,19 @@ type EditProductFormProps = {
   };
 };
 
-export default function EditProductForm({ product }: EditProductFormProps) {
+export default function AddProductPage({  }: EditProductFormProps) {
     const router = useRouter();
-    const [title, setTitle] = useState(product.title);
-    const [brand, setBrand] = useState(product.brand);
-    const [category, setCategory] = useState(product.category);
-    const [price, setPrice] = useState(product.price);
-    const [stock, setStock] = useState(product.stock);
-    const [discount, setDiscount] = useState(product.discount);
-    const [description, setDescription] = useState(product.description);
-    const [rating, setRating] = useState(product.rating);
+    const [title, setTitle] = useState("");
+    const [brand, setBrand] = useState("");
+    const [category, setCategory] = useState("");
+    const [price, setPrice] = useState(0);
+    const [stock, setStock] = useState(0);
+    const [discount, setDiscount] = useState(0);
+    const [description, setDescription] = useState("");
+    const [rating, setRating] = useState(0);
     const [imageUrl, setImageUrl] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
 
         const updatedProduct = {
@@ -47,31 +47,33 @@ export default function EditProductForm({ product }: EditProductFormProps) {
             imageUrl,
         };
 
-        const response = await fetch(`/api/products/${product.id}`, {
-            method: "PATCH",
+        const response = await fetch("/api/products", {
+            method: "POST",
             headers: {
-            "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
             body: JSON.stringify(updatedProduct),
-        });
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (!response.ok) {
-            toast.error(data.message || "Failed to update product");
+            console.log(data);
+
+            if (!response.ok) {
+            toast.error(data.message);
             return;
-        }
+            }
 
-        toast.success(data.message || "Product updated successfully");
-        router.push(`/admin/products/${product.id}`);
-    };
+            toast.success(data.message);
+            router.push("/admin/products");
+        };
 
 
   return (
     <div>
         <div className="mb-6">
-            <p className="text-sm text-gray-500">Edit Product</p>
-            <h1 className="mt-1 text-3xl font-bold text-gray-900">{title}</h1>
+            <p className="text-sm text-gray-500">Add Product</p>
+            {/* <h1 className="mt-1 text-3xl font-bold text-gray-900">{title}</h1> */}
         </div>
 
         <form
@@ -83,7 +85,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Title</label>
                     <input
                         type="text"
-                        value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -93,7 +94,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Brand</label>
                     <input
                         type="text"
-                        value={brand}
                         onChange={(e) => setBrand(e.target.value)}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -103,7 +103,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Category</label>
                     <input
                         type="text"
-                        value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -113,7 +112,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Price</label>
                     <input
                         type="number"
-                        value={price}
                         onChange={(e) => setPrice(Number(e.target.value))}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -123,7 +121,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Stock</label>
                     <input
                         type="number"
-                        value={stock}
                         onChange={(e) => setStock(Number(e.target.value))}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -135,7 +132,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     </label>
                     <input
                         type="number"
-                        value={discount}
                         onChange={(e) => setDiscount(Number(e.target.value))}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -145,7 +141,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Rating</label>
                     <input
                         type="number"
-                        value={rating}
                         onChange={(e) => setRating(Number(e.target.value))}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -155,7 +150,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     <label className="text-sm font-medium text-gray-700">Image URL</label>
                     <input
                         type="text"
-                        value={imageUrl}
                         onChange={(e) => setImageUrl(e.target.value)}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
                     />
@@ -166,7 +160,6 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                         Description
                     </label>
                     <textarea
-                        value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         rows={5}
                         className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-2 text-sm outline-none focus:border-gray-400"
@@ -177,7 +170,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
             <div className="mt-6 flex justify-end gap-3">
                 <button
                     type="button"
-                    onClick={() => router.push(`/admin/products/${product.id}`)}
+                    onClick={() => router.push(`/admin/products`)}
                     className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
                     >
                     Cancel
@@ -187,7 +180,7 @@ export default function EditProductForm({ product }: EditProductFormProps) {
                     type="submit"
                     className="rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
                 >
-                    Save Changes
+                    Create Product
                 </button>
             </div>
         </form>
