@@ -1,5 +1,6 @@
 import { products } from "@/data/products";
 import Image from "next/image";
+import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
 function InfoItem({ label, value }: { label: string; value: string | number }) {
@@ -43,9 +44,12 @@ export default async function AdminProductDetailsPage ({
               </div>
       
               <div className="flex gap-2">
-                <button className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
-                  Edit
-                </button>
+                <Link
+                    href={`/admin/products/${item.id}/edit`}
+                    className="rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
+                    >
+                    Edit
+                </Link>
       
                 <button className="rounded-lg border border-red-200 bg-white px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50">
                   Delete
