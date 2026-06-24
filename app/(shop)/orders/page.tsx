@@ -1,11 +1,11 @@
 "use client"
 import { useAuthStore } from "@/store/authStore";
-import { useOrderStor } from "@/store/orderStore";
+import { useOrderStore} from "@/store/orderStore";
 import Link from "next/link";
 import LoginRequired from "../login/LoginRequired";
 
 const OrdersPage = () => {
-    const orderItems = useOrderStor((state) => state.orders)
+    const orderItems = useOrderStore((state) => state.orders)
    const user = useAuthStore((state) => state.user)
    const hasHydrated = useAuthStore((state) => state.hasHydrated);
    const statusStyles = {

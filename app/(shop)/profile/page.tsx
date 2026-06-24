@@ -4,14 +4,14 @@ import LoginRequired from "../login/LoginRequired"
 import { useCartStore } from "@/store/cartStore"
 import { useWishlist } from "@/store/wishlistStore"
 import Link from "next/link"
-import { useOrderStor } from "@/store/orderStore"
+import { useOrderStore } from "@/store/orderStore"
 
 const ProfilePage = () => {
     const user = useAuthStore((state) => state.user)
     const hasHydrated = useAuthStore((state) => state.hasHydrated);
     const cartItems = useCartStore((state) => state.cartItems)
     const wishlistItems = useWishlist((state) => state.wishlistItems)
-    const orderItems= useOrderStor((state) => state.orders)
+    const orderItems= useOrderStore((state) => state.orders)
 
     if (!hasHydrated) {
       return null;

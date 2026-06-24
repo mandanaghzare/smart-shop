@@ -1,6 +1,6 @@
 "use client"
 import { useCartStore } from "@/store/cartStore"
-import { useOrderStor } from "@/store/orderStore"
+import { useOrderStore } from "@/store/orderStore"
 import { CartItem } from "@/store/cartStore";
 import { useState } from "react"
 import Link from "next/link";
@@ -16,7 +16,7 @@ const CheckoutPage = () => {
     const shipping = subTotal > 200 ? 0 : 20
     const total = subTotal + shipping
     const [isOrderPlaced, setIsOrderPlaced] = useState(false)
-    const addOrder = useOrderStor((state) => state.addOrder)
+    const addOrder = useOrderStore((state) => state.addOrder)
 
     const handlePlaceOrder = () => {
         const latestCart = JSON.parse(localStorage.getItem("cart-storage") || "{}");

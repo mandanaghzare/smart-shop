@@ -8,15 +8,19 @@ type Order = {
     items: CartItem[];
     total: number;
     createdAt: string;
-    status: "processing" | "delivered" | "cancelled"
+    status: "processing" | "delivered" | "cancelled";
 }
 
 type OrderStore = {
     orders: Order[];
-    addOrder: (item: CartItem[], total: number) => void
+    addOrder: (item: CartItem[], total: number) => void;
+    updateOrderStatus: (
+    id: string,
+    status: Order["status"]
+  ) => void;
 }
 
-export const useOrderStor = create<OrderStore>() (
+export const useOrderStore = create<OrderStore>() (
     persist(
         (set) => ({
             orders: [],
@@ -30,10 +34,18 @@ export const useOrderStor = create<OrderStore>() (
                             items,
                             total,
                             createdAt: new Date().toLocaleDateString(),
-                            status: "processing",
+                            status: "processing"
                         }
                     ]
-                }))
+                })),
+                updateOrderStatus: (id, status) =>
+                    set((state) => ({
+                        orders: state.orders.map((order) =>
+                        order.id === id
+                            ? { ...order, status }
+                            : order
+                        ),
+                })),
         }),
         {
             name: "order-storage",
