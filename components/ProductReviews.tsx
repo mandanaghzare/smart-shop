@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { addReview, getProductReviews, Review } from "@/lib/reviewService";
+import { getProductReviews, Review, upsertReview } from "@/lib/reviewService";
+import { useAuthStore } from "@/store/authStore";
+import { toast } from "sonner";
 
 type ProductReviewsProps = {
   productId: string;
@@ -17,36 +19,45 @@ export default function ProductReviews({
   productId,
   initialReviews,
 }: ProductReviewsProps) {
-    const [reviews, setReviews] = useState<Review[]>([]);
-    const [rating, setRating] = useState(5);
-    const [comment, setComment] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false);
-  
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
- 
+  const user = useAuthStore((state) => state.user);
 
   useEffect(() => {
-  async function fetchReviews() {
-    const data = await getProductReviews(productId);
-    setReviews(data);
-  }
+    async function fetchReviews() {
+      try {
+        const data = await getProductReviews(productId);
+        setReviews(data);
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to load reviews.");
+      }
+    }
 
-  fetchReviews();
-}, [productId]);
+    fetchReviews();
+  }, [productId]);
 
-  const allReviews = useMemo(() => {
-    const mappedInitialReviews = initialReviews.map((review, index) => ({
-      id: `initial-${index}`,
-      productId,
-      userId: 0,
-      userName: review.reviewerName,
-      rating: review.rating,
-      comment: review.comment,
-      createdAt: review.date,
-    }));
+  const mappedInitialReviews = useMemo(
+    () =>
+      initialReviews.map((review, index) => ({
+        id: `initial-${index}`,
+        productId,
+        userId: `initial-${index}`,
+        userName: review.reviewerName,
+        rating: review.rating,
+        comment: review.comment,
+        createdAt: review.date,
+      })),
+    [initialReviews, productId]
+  );
 
-    return [...reviews, ...mappedInitialReviews];
-  }, [reviews, initialReviews, productId]);
+  const allReviews = useMemo(
+    () => [...reviews, ...mappedInitialReviews],
+    [reviews, mappedInitialReviews]
+  );
 
   const averageRating =
     allReviews.length > 0
@@ -54,51 +65,88 @@ export default function ProductReviews({
         allReviews.length
       : 0;
 
+  const hasUserReviewed = user
+    ? reviews.some((review) => review.userId === user.uid)
+    : false;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!comment.trim()) return;
+    if (!user) {
+      toast.error("Please login first.");
+      return;
+    }
 
-    setIsSubmitting(true);
+    if (!comment.trim()) {
+      toast.error("Please write a review.");
+      return;
+    }
 
     try {
-      await addReview({
+      setIsSubmitting(true);
+
+      await upsertReview({
         productId,
-        userId: 1,
-        userName: "Demo User",
+        userId: user.uid,
+        userName: user.name,
         rating,
-        comment,
+        comment: comment.trim(),
       });
 
-        setComment("");
-        setRating(5);
-        const data = await getProductReviews(productId);
-        setReviews(data);
-        } finally {
-        setIsSubmitting(false);
-        }
+      setComment("");
+      setRating(5);
+
+      const data = await getProductReviews(productId);
+      setReviews(data);
+
+      toast.success(
+        hasUserReviewed
+          ? "Review updated successfully."
+          : "Review submitted successfully."
+      );
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to submit review.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-xl shadow-slate-950/30 sm:p-8">
-      <div className="mb-5 sm:mb-6">
-        <h2 className="text-xl font-bold text-slate-100 sm:text-2xl">
-          Customer Reviews
-        </h2>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <h2 className="text-xl font-bold text-slate-100 sm:text-2xl">
+            Customer Reviews
+          </h2>
 
-        <p className="mt-2 text-sm text-slate-400">
-          {allReviews.length > 0
-            ? `${averageRating.toFixed(1)} average rating from ${
-                allReviews.length
-              } reviews.`
-            : "Be the first to review this product."}
-        </p>
+          <p className="mt-2 text-sm text-slate-400">
+            {allReviews.length > 0
+              ? `${averageRating.toFixed(1)} average rating from ${
+                  allReviews.length
+                } reviews.`
+              : "Be the first to review this product."}
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-slate-800 bg-slate-800/70 px-4 py-3 text-right">
+          <p className="text-2xl font-bold text-amber-400">
+            {averageRating.toFixed(1)}
+          </p>
+          <p className="text-xs text-slate-400">Average rating</p>
+        </div>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="mb-6 rounded-xl border border-slate-800 bg-slate-800/80 p-4"
+        className="mb-6 rounded-xl border border-slate-800 bg-slate-800/70 p-4"
       >
+        {hasUserReviewed && (
+          <p className="mb-4 rounded-lg border border-emerald-900/60 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-300">
+            You can update your previous review by submitting again.
+          </p>
+        )}
+
         <label className="text-sm font-medium text-slate-200">Rating</label>
 
         <div className="mt-2 flex gap-1">
@@ -110,7 +158,7 @@ export default function ProductReviews({
                 key={value}
                 type="button"
                 onClick={() => setRating(value)}
-                className={`text-2xl ${
+                className={`text-3xl transition ${
                   value <= rating ? "text-amber-400" : "text-slate-600"
                 }`}
               >
@@ -128,8 +176,12 @@ export default function ProductReviews({
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={4}
-          placeholder="Write your review..."
-          className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-slate-500"
+          placeholder={
+            hasUserReviewed
+              ? "Update your review..."
+              : "Write your review..."
+          }
+          className="mt-2 w-full rounded-lg border border-slate-700 bg-slate-950/70 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-blue-500"
         />
 
         <button
@@ -137,15 +189,19 @@ export default function ProductReviews({
           disabled={isSubmitting}
           className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting ? "Submitting..." : "Submit Review"}
+          {isSubmitting
+            ? "Submitting..."
+            : hasUserReviewed
+            ? "Update Review"
+            : "Submit Review"}
         </button>
       </form>
 
-      <div className="space-y-4">
+      <div className="max-h-[520px] space-y-4 overflow-y-auto pr-2">
         {allReviews.map((review) => (
           <div
             key={review.id}
-            className="rounded-xl border border-slate-800 bg-slate-800/80 p-4 sm:p-5"
+            className="rounded-xl border border-slate-800 bg-slate-800/70 p-4 sm:p-5"
           >
             <div className="mb-3 flex items-start justify-between gap-4">
               <div>

@@ -53,7 +53,11 @@ const RegisterPage = () => {
     try {
       setIsLoading(true);
 
-      await register(formValues.email, formValues.password);
+      await register(
+        formValues.fullName,
+        formValues.email,
+        formValues.password
+      );
 
       toast.success("Account created successfully");
 

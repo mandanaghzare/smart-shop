@@ -4,13 +4,20 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { create } from "zustand";
 
+type AuthUser = {
+  uid: string;
+  email: string;
+  name: string;
+};
+
 type AuthStore = {
-  user: { email: string } | null;
+  user: AuthUser | null;
   hasHydrated: boolean;
-  register: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   initAuth: () => void;
@@ -20,16 +27,22 @@ export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   hasHydrated: false,
 
-  register: async (email, password) => {
+  register: async (name, email, password) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
 
+    await updateProfile(userCredential.user, {
+      displayName: name,
+    });
+
     set({
       user: {
+        uid: userCredential.user.uid,
         email: userCredential.user.email || email,
+        name,
       },
     });
   },
@@ -43,7 +56,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
     set({
       user: {
+        uid: userCredential.user.uid,
         email: userCredential.user.email || email,
+        name:
+          userCredential.user.displayName ||
+          userCredential.user.email?.split("@")[0] ||
+          "User",
       },
     });
   },
@@ -58,7 +76,12 @@ export const useAuthStore = create<AuthStore>((set) => ({
       if (user) {
         set({
           user: {
+            uid: user.uid,
             email: user.email || "",
+            name:
+              user.displayName ||
+              user.email?.split("@")[0] ||
+              "User",
           },
           hasHydrated: true,
         });
