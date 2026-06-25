@@ -1,5 +1,6 @@
 import AddToCartButton from "@/components/AddToCartButton";
 import AddToWishlistButton from "@/components/AddToWishlistButton";
+import ProductReviews from "@/components/ProductReviews";
 import RecentlyViewed from "@/components/RecentlyViewed";
 import { products } from "@/data/products";
 import Image from "next/image";
@@ -172,58 +173,10 @@ const ProductIds = async ({params}: ProductDetailsPageProps) => {
                 </div>
 
                 <div className="mt-6 grid gap-6 lg:grid-cols-[420px_1fr]">
-                    {product.reviews.length > 0 && (
-                        <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-xl shadow-slate-950/30 sm:p-8">
-                            <div className="mb-5 sm:mb-6">
-                                <h2 className="text-xl font-bold text-slate-100 sm:text-2xl">
-                                    Customer Reviews
-                                </h2>
-                                <p className="mt-2 text-sm text-slate-400">
-                                    What customers are saying about this product.
-                                </p>
-                            </div>
-
-                            <div className="space-y-4">
-                                {product.reviews.slice(0, 1).map((review, index) => (
-                                    <div
-                                        key={index}
-                                        className="rounded-xl border border-slate-800 bg-slate-800/80 p-4 sm:p-5"
-                                    >
-                                        <div className="mb-3 flex items-start justify-between gap-4">
-                                            <div>
-                                                <p className="font-semibold text-slate-100">
-                                                    {review.reviewerName}
-                                                </p>
-
-                                                <div className="mt-2 flex">
-                                                    {Array.from({ length: 5 }).map((_, starIndex) => (
-                                                        <span
-                                                            key={starIndex}
-                                                            className={
-                                                                starIndex < review.rating
-                                                                    ? "text-amber-400"
-                                                                    : "text-slate-600"
-                                                            }
-                                                        >
-                                                            ★
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-
-                                            <span className="text-xs text-slate-500">
-                                                {new Date(review.date).toLocaleDateString()}
-                                            </span>
-                                        </div>
-
-                                        <p className="text-sm leading-6 text-slate-300">
-                                            {review.comment}
-                                        </p>
-                                    </div>
-                                ))}
-                            </div>
-                        </section>
-                    )}
+                    <ProductReviews
+                        productId={product.id}
+                        initialReviews={product.reviews}
+                    />
 
                     {relatedProducts.length > 0 && (
                         <section className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 shadow-xl shadow-slate-950/30 sm:p-8">
