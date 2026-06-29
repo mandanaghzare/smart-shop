@@ -23,22 +23,45 @@ export default function ProductReviews({
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   const user = useAuthStore((state) => state.user);
 
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const data = await getProductReviews(productId);
+ useEffect(() => {
+  let isMounted = true;
+
+  async function loadReviews() {
+    try {
+      setIsLoading(true);
+      setLoadError(false);
+
+      const data = await getProductReviews(productId);
+
+      if (isMounted) {
         setReviews(data);
-      } catch (error) {
-        console.error(error);
+      }
+    } catch (error) {
+
+      if (isMounted) {
+        setLoadError(true);
         toast.error("Failed to load reviews.");
       }
+    } finally {
+      if (isMounted) {
+        setIsLoading(false);
+      }
     }
+  }
 
-    fetchReviews();
-  }, [productId]);
+  loadReviews();
+
+  return () => {
+    isMounted = false;
+  };
+}, [productId, reloadKey]);
+
 
   const mappedInitialReviews = useMemo(
     () =>
@@ -105,7 +128,6 @@ export default function ProductReviews({
           : "Review submitted successfully."
       );
     } catch (error) {
-      console.error(error);
       toast.error("Failed to submit review.");
     } finally {
       setIsSubmitting(false);
@@ -198,39 +220,71 @@ export default function ProductReviews({
       </form>
 
       <div className="max-h-[520px] space-y-4 overflow-y-auto pr-2">
-        {allReviews.map((review) => (
-          <div
-            key={review.id}
-            className="rounded-xl border border-slate-800 bg-slate-800/70 p-4 sm:p-5"
-          >
-            <div className="mb-3 flex items-start justify-between gap-4">
-              <div>
-                <p className="font-semibold text-slate-100">
-                  {review.userName}
-                </p>
-
-                <div className="mt-2 flex">
-                  {Array.from({ length: 5 }).map((_, starIndex) => (
-                    <span
-                      key={starIndex}
-                      className={
-                        starIndex < review.rating
-                          ? "text-amber-400"
-                          : "text-slate-600"
-                      }
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-              </div>
+        {isLoading ? (
+          Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="animate-pulse rounded-xl border border-slate-800 bg-slate-800/70 p-4 sm:p-5"
+            >
+              <div className="mb-4 h-4 w-32 rounded bg-slate-700" />
+              <div className="mb-4 h-3 w-24 rounded bg-slate-700" />
+              <div className="h-3 w-full rounded bg-slate-700" />
             </div>
+          ))
+        ) : loadError ? (
+          <div className="rounded-xl border border-red-900/60 bg-red-950/40 p-5 text-center">
+            <p className="font-semibold text-red-300">Unable to load reviews.</p>
+            <p className="mt-2 text-sm text-red-200/80">
+              Please try again later.
+            </p>
 
-            <p className="text-sm leading-6 text-slate-300">
-              {review.comment}
+            <button
+              type="button"
+              onClick={() => setReloadKey((current) => current + 1)}
+              className="mt-4 rounded-lg border border-red-800 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-900/40"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : allReviews.length === 0 ? (
+          <div className="rounded-xl border border-slate-800 bg-slate-800/70 p-6 text-center">
+            <p className="text-2xl">⭐</p>
+            <p className="mt-3 font-semibold text-slate-100">No reviews yet</p>
+            <p className="mt-2 text-sm text-slate-400">
+              Be the first customer to share your experience.
             </p>
           </div>
-        ))}
+        ) : (
+          allReviews.map((review) => (
+            <div
+              key={review.id}
+              className="rounded-xl border border-slate-800 bg-slate-800/70 p-4 sm:p-5"
+            >
+              <div className="mb-3 flex items-start justify-between gap-4">
+                <div>
+                  <p className="font-semibold text-slate-100">{review.userName}</p>
+
+                  <div className="mt-2 flex">
+                    {Array.from({ length: 5 }).map((_, starIndex) => (
+                      <span
+                        key={starIndex}
+                        className={
+                          starIndex < review.rating
+                            ? "text-amber-400"
+                            : "text-slate-600"
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-sm leading-6 text-slate-300">{review.comment}</p>
+            </div>
+          ))
+        )}
       </div>
     </section>
   );

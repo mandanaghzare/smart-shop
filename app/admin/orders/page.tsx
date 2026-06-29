@@ -28,7 +28,6 @@ export default function OrdersPage() {
     });
   }, [orders, searchQuery, selectedStatus]);
 
-  console.log(filteredOrders);
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

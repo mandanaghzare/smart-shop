@@ -58,7 +58,6 @@ export default function AddProductPage({  }: EditProductFormProps) {
             setIsSubmitting(false);
             const data = await response.json();
 
-            console.log(data);
 
             if (!response.ok) {
             toast.error(data.message);
