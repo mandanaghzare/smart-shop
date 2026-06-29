@@ -1,6 +1,6 @@
 # 🛍️ Smart Shop
 
-A modern, fully responsive e-commerce web application built with Next.js, TypeScript, Tailwind CSS, Zustand, and Firebase Authentication.
+A modern, fully responsive e-commerce web application built with **Next.js**, **TypeScript**, **Tailwind CSS**, **Zustand**, and **Firebase**.
 
 ## 🚀 Live Demo
 
@@ -12,78 +12,95 @@ https://github.com/mandanaghzare/smart-shop
 
 ---
 
-## 📖 Overview
+# 📖 Overview
 
-Smart Shop is a feature-rich e-commerce application that allows users to browse products, search and filter items, manage a shopping cart and wishlist, authenticate securely, place orders, and track purchase history.
+Smart Shop is a modern e-commerce application that demonstrates a complete shopping experience, including product browsing, authentication, shopping cart management, wishlist functionality, order management, customer reviews, and an admin dashboard.
 
-The project was built to demonstrate modern frontend development practices, global state management, URL-based filtering, authentication workflows, and responsive UI design.
+The project focuses on clean architecture, reusable components, responsive UI, global state management, authentication, and modern frontend development practices.
 
 ---
 
-## ✨ Features
+# ✨ Features
 
-### 🛒 Product Catalog
+## 🛒 Shopping Experience
 
-* Browse products across multiple categories
+* Browse products by category
 * Product details page
-* Discount pricing display
-* Product ratings and stock status
-* Related product recommendations
+* Related products
 * Recently viewed products
+* Product ratings
+* Stock availability
+* Discount pricing
 
-### 🔍 Advanced Filtering
+## 🔍 Product Search & Filtering
 
+* Search products
 * Category filtering
-* Search functionality
 * Price range filtering
-* Stock availability filtering
+* Stock filtering
 * Sorting options
-* URL-synced filters using query parameters
-* Filter persistence after page refresh
+* URL-based filters
+* Filter persistence
 
-### ❤️ Wishlist
+## ❤️ Wishlist
 
-* Add products to wishlist
-* Remove products from wishlist
-* Persistent wishlist storage
+* Add / Remove wishlist items
+* Persistent wishlist using Zustand Persist
 
-### 🛍️ Shopping Cart
+## 🛍️ Shopping Cart
 
-* Add products to cart
-* Update quantities
+* Add products
 * Remove products
-* Persistent cart state
-* Cart summary calculations
+* Quantity management
+* Cart summary
+* Persistent cart
 
-### 📦 Checkout & Orders
+## 📦 Checkout & Orders
 
-* Checkout page
-* Order placement flow
-* Automatic cart clearing after checkout
-* Order history tracking
+* Checkout flow
+* Order creation
+* Order history
+* Admin order management
 
-### 🔐 Authentication
+## ⭐ Product Reviews
+
+* Firebase Firestore integration
+* One review per user per product
+* Update existing reviews
+* Loading skeleton
+* Empty state
+* Error handling with retry
+
+## 🔐 Authentication
 
 * Firebase Authentication
-* Email & Password Registration
-* Email & Password Login
-* Persistent authentication state
-* Protected Routes
-* Route guarding for authenticated pages
+* Email & Password Sign Up
+* Login
+* Protected routes
+* Persistent authentication
 
-### 🎨 UI & UX
+## 🛠️ Admin Dashboard
 
-* Fully responsive design
+* Dashboard overview
+* Products management
+* Users management
+* Orders management
+* Analytics page
+* Search & filtering
+
+## 🎨 UI / UX
+
+* Fully responsive
 * Dark / Light mode
-* Skeleton loading states
+* Skeleton loading
 * Toast notifications
-* Modern card-based interface
-* Accessible navigation
-* Loading and hydration handling
+* Empty states
+* Error states
+* Modern card-based design
 
 ---
 
-## 🛠️ Tech Stack
+# 🛠️ Tech Stack
 
 ### Frontend
 
@@ -95,11 +112,18 @@ The project was built to demonstrate modern frontend development practices, glob
 ### State Management
 
 * Zustand
-* Zustand Persist Middleware
+* Zustand Persist
 
-### Authentication
+### Backend Services
 
 * Firebase Authentication
+* Cloud Firestore
+
+### UI Libraries
+
+* Recharts
+* Sonner
+* Lucide React
 
 ### Deployment
 
@@ -107,9 +131,9 @@ The project was built to demonstrate modern frontend development practices, glob
 
 ---
 
-## 📸 Screenshots
+# 📸 Screenshots
 
-### Home Page
+### Home
 
 ![Home](public/screenshots/home.png)
 
@@ -117,37 +141,33 @@ The project was built to demonstrate modern frontend development practices, glob
 
 ![Product Details](public/screenshots/product-details.png)
 
-### Shopping Cart
+### Cart
 
 ![Cart](public/screenshots/cart.png)
 
-### Orders Page
+### Admin Dashboard
+
+![Admin](public/screenshots/admin-dashboard.png)
+
+### Orders
 
 ![Orders](public/screenshots/orders.png)
 
 ---
 
-## 📦 Installation
-
-Clone the repository:
+# 📦 Installation
 
 ```bash
 git clone https://github.com/mandanaghzare/smart-shop.git
 ```
 
-Navigate to the project:
-
 ```bash
 cd smart-shop
 ```
 
-Install dependencies:
-
 ```bash
 npm install
 ```
-
-Run the development server:
 
 ```bash
 npm run dev
@@ -155,64 +175,56 @@ npm run dev
 
 Open:
 
-```txt
+```
 http://localhost:3000
 ```
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
-```txt
+```text
 app/
-├── cart/
-├── checkout/
-├── login/
-├── orders/
-├── products/
-│   └── [id]/
-├── profile/
-├── register/
-├── wishlist/
-├── layout.tsx
-└── page.tsx
-
 components/
 store/
 lib/
+hooks/
 types/
 data/
+public/
 ```
 
 ---
 
-## 🎯 What I Practiced
+# 🎯 What I Practiced
 
 * Next.js App Router
-* Dynamic Routing
 * TypeScript
-* Zustand State Management
-* Firebase Authentication
-* Protected Routes
-* URL Query Parameters
-* Responsive Design
-* Dark Mode Implementation
-* Toast Notifications
 * Component Architecture
-* E-commerce User Flows
+* Responsive Design
+* Global State Management with Zustand
+* Firebase Authentication
+* Cloud Firestore
+* Protected Routes
+* CRUD Workflows
+* URL Search Params
+* Loading & Error States
+* Dashboard Design
 * Deployment with Vercel
 
 ---
 
-## 🌐 Deployment
+# 📝 Notes
 
-Deployed on Vercel:
-
-https://smart-shop-liard.vercel.app/
+* Authentication and product reviews are powered by Firebase.
+* Shopping cart, wishlist, and orders are persisted locally using Zustand Persist.
+* This project was built as a frontend portfolio project to demonstrate modern React and Next.js development practices.
 
 ---
 
-## 👩‍💻 Author
+# 👩‍💻 Author
+
+**Mandana Ghzare**
 
 GitHub:
 https://github.com/mandanaghzare
