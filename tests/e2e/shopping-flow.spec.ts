@@ -18,7 +18,7 @@ test("user can open a product and add it to cart", async ({ page }) => {
   await expect(page).toHaveURL(/\/products\/.+/);
 
   const addToCartButton = page.getByRole("button", {
-    name: "Add to Cart",
+    name: /add to cart/i,
   });
 
   await expect(addToCartButton).toBeVisible();

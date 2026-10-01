@@ -14,10 +14,11 @@ const AddToCartButton = ({product, variant}: AddToCartButtonProps) => {
     return(
         <div>
             <button
-            onClick={() => 
-                {addToCart(product);
-                toast.success(`${product.title} added to cart`);
-            }}
+                aria-label="Add to cart"
+                onClick={() => 
+                    {addToCart(product);
+                    toast.success(`${product.title} added to cart`);
+                }}
                 className={
                     variant === "icon"
                     ? "rounded-xl border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"

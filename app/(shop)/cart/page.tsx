@@ -49,6 +49,7 @@ const CartPage = () => {
             <div className="space-y-4">
               {cartItems.map((item) => (
                 <div
+                 data-testid="cart-item"
                   key={item.id}
                   className="rounded-2xl border border-slate-800 bg-slate-800/80 p-4 shadow-sm"
                 >
